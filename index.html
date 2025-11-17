@@ -1,0 +1,1421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Data-Driven Urban Design Lab</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    /* ---------- Base ---------- */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      background-color: #0a0a0a;
+      color: #ffffff;
+      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: #ffffff;
+      text-decoration: none;
+      transition: opacity 0.3s ease;
+    }
+
+    a:hover {
+      opacity: 0.7;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 20px 60px;
+    }
+
+    /* ---------- Language visibility ---------- */
+    body.lang-en .lang-en { display: inline; }
+    body.lang-en .lang-ko { display: none; }
+
+    body.lang-ko .lang-en { display: none; }
+    body.lang-ko .lang-ko { display: inline; }
+
+    /* block 요소들도 동일하게 동작하도록 */
+    .lang-en, .lang-ko {
+      /* 기본 display는 태그 기본값을 따르고,
+         필요 시 JS에서 show/hide만 조절 */
+    }
+
+    /* ---------- Navigation ---------- */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 15px 60px;
+      background: rgba(10,10,10,0.95);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s ease, padding 0.3s ease;
+    }
+
+    nav.scrolled {
+      padding: 12px 60px;
+    }
+
+    .nav-logo {
+      height: 30px;
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      pointer-events: none;
+    }
+
+    nav.scrolled .nav-logo {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 35px;
+      font-size: 14px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      align-items: center;
+    }
+
+    nav a {
+      text-transform: uppercase;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    nav a:hover {
+      opacity: 1;
+    }
+
+    /* Language toggle buttons */
+    .lang-toggle {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 10px;
+    }
+
+    .lang-btn {
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 13px;
+      cursor: pointer;
+      opacity: 0.6;
+      padding: 0;
+      text-transform: uppercase;
+    }
+
+    .lang-btn.active {
+      opacity: 1;
+      text-decoration: underline;
+    }
+
+    .lang-separator {
+      opacity: 0.4;
+      font-size: 12px;
+    }
+
+    /* ---------- Hero Section ---------- */
+    .hero {
+      min-height: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 60px;
+      padding-bottom: 26px;
+    }
+
+    .hero-content {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .hero-left {
+      padding-right: 20px;
+    }
+
+    .lab-logo {
+      width: 100%;
+      max-width: 450px;
+      height: auto;
+      margin-bottom: 0px;
+    }
+
+    .hero-description {
+      font-size: 16px;
+      line-height: 1.4;
+      margin-bottom: 10px;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.9);
+    }
+
+    .hero-links {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 8px;
+    }
+
+    .hero-links a {
+      color: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding-bottom: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .hero-links a:hover {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+    }
+
+    .hero-links .clickable-email {
+      color: rgba(255, 255, 255, 0.8);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+      padding-bottom: 2px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .hero-links .clickable-email:hover {
+      color: #ffffff;
+      border-bottom-color: #ffffff;
+    }
+
+    .hero-copy-note {
+      opacity: 0;
+      margin-left: 8px;
+      font-size: 12px;
+      color: #4CAF50;
+      transition: opacity 0.3s ease;
+    }
+
+    .department {
+      font-size: 14px; /* 기존 그대로 */
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 300;
+      letter-spacing: 0.01em;
+      font-style: italic;
+      margin-bottom: 30px;  /* ← 이 줄 추가 (값은 10~20px 사이에서 취향대로 조정) */
+    }
+
+    .hero-images {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      padding-left: 30px;
+    }
+
+    .hero-image {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border: 0.5px solid rgba(255, 255, 255, 0.1);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .hero-image:hover {
+      transform: scale(1.02);
+      opacity: 0.9;
+    }
+
+    /* ---------- About Section ---------- */
+    .about-section {
+      padding: 39px 0 22px 0;
+      background-color: #0a0a0a;
+    }
+
+    .about-content {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .section-title {
+      font-size: 26px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .about-text {
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.85);
+      font-weight: 300;
+    }
+
+    .about-text p {
+      margin-bottom: 10px;
+    }
+
+    .about-photo-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding-top: 20px;
+    }
+
+    .about-photo {
+      width: 100%;
+      max-width: 280px;
+      height: auto;
+      filter: grayscale(20%);
+      border: 0.5px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* ---------- Members Section ---------- */
+    .members-section {
+      margin-top: 20px;
+    }
+
+    .subsection-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 10px;
+      letter-spacing: -0.01em;
+    }
+
+    .members-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+      max-width: 85%;
+    }
+
+    .member-card {
+      padding: 10px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 0.5px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .member-card:hover {
+      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .member-name {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+
+    .member-role {
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.6);
+    }
+
+    /* ---------- Publications Section ---------- */
+    .section {
+      padding: 30px 0;
+    }
+
+    .section-content {
+      width: 100%;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    .publication-list {
+      margin-top: 15px;
+    }
+
+    .publication-item {
+      display: flex;
+      gap: 20px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s ease;
+    }
+
+    .publication-item:hover {
+      background: rgba(255, 255, 255, 0.02);
+      padding-left: 20px;
+      margin-left: -20px;
+      padding-right: 20px;
+      margin-right: -20px;
+    }
+
+    .publication-number {
+      font-size: 20px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.4);
+      min-width: 50px;
+    }
+
+    .publication-content {
+      flex: 1;
+    }
+
+    .publication-title {
+      font-size: 15px;
+      font-weight: 500;
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .publication-authors {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 2px;
+    }
+
+    .publication-journal {
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.5);
+      font-style: italic;
+      margin-bottom: 6px;
+    }
+
+    .publication-links {
+      display: flex;
+      gap: 12px;
+    }
+
+    .publication-links a {
+      font-size: 12px;
+      padding: 3px 10px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .publication-links a:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* ---------- Contact Section ---------- */
+    .contact-content {
+      max-width: 800px;
+      margin-top: 10px;
+    }
+
+    .contact-intro {
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.85);
+      margin-bottom: 15px;
+    }
+
+    .contact-details {
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .contact-details p {
+      margin-bottom: 8px;
+    }
+
+    .contact-details strong {
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    /* ---------- Footer ---------- */
+    footer {
+      background: rgba(255, 255, 255, 0.02);
+      padding: 20px 0;
+      margin-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-content {
+      text-align: center;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 0.02em;
+    }
+
+    /* ---------- Research Interests Section ---------- */
+    .research-section {
+      padding: 22px 0 30px 0;
+      background-color: #0a0a0a;
+    }
+
+    .research-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-top: 20px;
+    }
+
+    .research-card {
+      padding: 25px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.3s ease;
+    }
+
+    .research-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      transform: translateY(-3px);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .research-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .research-description {
+      font-size: 14px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.7);
+      font-weight: 300;
+      margin-bottom: 20px;
+    }
+
+    .research-projects {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .projects-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .projects-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .projects-list li {
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 8px;
+      padding-left: 18px;
+      position: relative;
+    }
+
+    .projects-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 16px;
+      line-height: 1;
+      top: 2px;
+    }
+
+    /* ---------- Placeholder Text ---------- */
+    .placeholder-text {
+      font-size: 14px;
+      line-height: 1.4;
+      color: rgba(255, 255, 255, 0.6);
+      font-style: italic;
+      max-width: 800px;
+    }
+
+    /* ---------- Responsive Design ---------- */
+    @media (max-width: 1200px) {
+      .container {
+        padding: 25px 40px;
+      }
+      
+      nav {
+        padding: 15px 40px;
+      }
+      
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .hero-left {
+        padding-right: 0;
+      }
+      
+      .hero-images {
+        padding-left: 0;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+      }
+
+      .hero-image {
+        height: 180px;
+      }
+      
+      .about-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .about-photo-container {
+        padding-top: 0;
+      }
+
+      .research-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      
+      nav {
+        padding: 10px 15px;
+      }
+
+      nav.scrolled {
+        padding: 8px 15px;
+      }
+      
+      nav ul {
+        gap: 10px;
+        font-size: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+
+      nav ul li {
+        margin: 2px 0;
+      }
+      
+      .nav-logo {
+        height: 22px;
+        max-width: 120px;
+      }
+      
+      .hero {
+        padding-top: 70px;
+      }
+      
+      .section-title {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
+      
+      .hero-images {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+
+      .hero-image {
+        height: 200px;
+      }
+      
+      .members-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      
+      .publication-item {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px 0;
+      }
+
+      .research-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+      }
+
+      .research-card {
+        padding: 20px;
+      }
+
+      .research-title {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        padding: 8px 10px;
+      }
+
+      nav.scrolled {
+        padding: 6px 10px;
+      }
+
+      nav ul {
+        gap: 8px;
+        font-size: 9px;
+        letter-spacing: 0;
+      }
+
+      nav a {
+        padding: 2px 0;
+      }
+
+      .nav-logo {
+        height: 20px;
+        max-width: 100px;
+      }
+
+      .hero {
+        padding-top: 60px;
+      }
+
+      .section-title {
+        font-size: 18px;
+      }
+
+      .lab-logo {
+        max-width: 280px;
+      }
+
+      .publication-item {
+        padding: 10px 0;
+      }
+
+      .publication-number {
+        font-size: 16px;
+        min-width: 40px;
+      }
+
+      .publication-title {
+        font-size: 13px;
+      }
+
+      .publication-authors,
+      .publication-journal {
+        font-size: 11px;
+      }
+
+      .publication-links a {
+        font-size: 10px;
+        padding: 2px 8px;
+      }
+    }
+  </style>
+</head>
+<body class="lang-en">
+  <!-- Navigation -->
+  <nav id="navbar">
+    <a href="#home">
+      <img src="images/ddud_logo.png" alt="DDUD Lab" class="nav-logo">
+    </a>
+    <ul id="navMenu">
+      <li><a href="#about">About</a></li>
+      <li><a href="#publications">Publications</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#news">News</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li class="lang-toggle">
+        <button id="lang-kr-btn" class="lang-btn">KR</button>
+        <span class="lang-separator">/</span>
+        <button id="lang-en-btn" class="lang-btn active">EN</button>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-left">
+          <img src="images/ddud_logo.png" alt="Data-Driven Urban Design Lab" class="lab-logo">
+          <p class="department">
+            <span class="lang-en">Department of Urban Planning and Engineering, Yonsei University</span>
+            <span class="lang-ko">Department of Urban Planning and Engineering, Yonsei University</span>
+          </p>
+
+          <p class="hero-description">
+            <span class="lang-en">
+              We measure, analyze, and apply urban data for data-driven
+              urban design. We combine GIS, statistical modeling and
+              GeoAI with urban design principles for safer, healthier, and
+              more pleasant cities.
+            </span>
+            <span class="lang-ko">
+              우리는 데이터 기반 도시설계를 위해 도시 데이터를 계측·분석·활용하는 연구실입니다.
+              GIS, 통계 모형, GeoAI를 도시설계 원리와 결합하여 더 안전하고 건강하며
+              쾌적한 도시환경을 만드는 방법을 탐구합니다.
+            </span>
+          </p>
+
+          <p class="hero-links">
+            <a href="https://scholar.google.com/citations?user=m37bGGwAAAAJ&hl=en" target="_blank">Google Scholar</a> | 
+            <a href="https://www.researchgate.net/profile/Bon-Woo-Koo?ev=hdr_xprf" target="_blank">ResearchGate</a> |
+            <span
+              id="hero-email-link"
+              class="clickable-email"
+              data-email="bonwookoo@yonsei.ac.kr"
+            >
+              Email
+            </span>
+            <span id="hero-copy-notification" class="hero-copy-note">Copied!</span>
+          </p>
+
+
+        </div>
+
+        <div class="hero-images">
+          <img src="images/landingimage1.jpg" alt="Urban network visualization 1" class="hero-image">
+          <img src="images/landingimage2.jpg" alt="Urban network visualization 2" class="hero-image">
+          <img src="images/landingimage3.jpg" alt="Urban analysis visualization" class="hero-image">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="about-content">
+        <div>
+          <h2 class="section-title">
+            <span class="lang-en">About Us</span>
+            <span class="lang-ko">연구실 소개</span>
+          </h2>
+          <div class="about-text">
+            <p>
+              <span class="lang-en">
+                We are a group of people with a shared passion for integrating data analytics and
+                urban design. Led by Bon Woo Koo, we collect or create, analyze, visualize,
+                and communicate diverse urban data to better design our cities. We work from the
+                scales of individual blocks to entire metropolitan regions, combining urban design
+                principles with GIS, spatial statistics, and cutting-edge artificial intelligence.
+              </span>
+              <span class="lang-ko">
+                우리는 데이터 분석과 도시설계를 통합하는 데 공통된 관심을 가진 연구자들의 모임입니다.
+                구본우 교수를 중심으로 다양한 도시 데이터를 수집·생성하고, 이를 분석·시각화·소통하여
+                더 나은 도시를 설계하는 방법을 연구합니다. 개별 블록에서부터 대도시권 규모에 이르기까지,
+                도시설계 이론을 GIS, 공간통계, 인공지능 기법과 결합하여 연구를 수행합니다.
+              </span>
+            </p>
+            <p>
+              <span class="lang-en">
+                We learn from one another, challenge ideas together, and collaborate to envision
+                better cities. We are always open to motivated Master's and PhD students who are
+                at the intersection of data analytics and urban design.
+              </span>
+              <span class="lang-ko">
+                우리는 서로에게 배우고, 아이디어를 비판적으로 검토하며, 다양한 협업을 통해
+                더 나은 도시의 모습을 함께 그려갑니다. 데이터 분석과 도시설계의 접점에 관심을 가진
+                열정적인 석·박사 과정 학생들의 참여를 언제나 환영합니다.
+              </span>
+            </p>
+          </div>
+          
+          <!-- Members Section -->
+          <div class="members-section">
+            <h3 class="subsection-title">
+              <span class="lang-en">Current Members</span>
+              <span class="lang-ko">구성원</span>
+            </h3>
+            <div class="members-grid">
+              <div class="member-card">
+                <div class="member-name">
+                  <span class="lang-en">Bon Woo Koo</span>
+                  <span class="lang-ko">구본우</span>
+                </div>
+                <div class="member-role">
+                  <span class="lang-en">Principal Investigator</span>
+                  <span class="lang-ko">책임연구자 (교수)</span>
+                </div>
+              </div>
+              <div class="member-card">
+                <div class="member-name">
+                  <span class="lang-en">Jong-Geun Kim</span>
+                  <span class="lang-ko">김종근</span>
+                </div>
+                <div class="member-role">
+                  <span class="lang-en">Master's Student</span>
+                  <span class="lang-ko">석사과정</span>
+                </div>
+              </div>
+              <div class="member-card">
+                <div class="member-name">
+                  <span class="lang-en">Dong-Yeon Kim</span>
+                  <span class="lang-ko">김동연</span>
+                </div>
+                <div class="member-role">
+                  <span class="lang-en">Undergrad Intern</span>
+                  <span class="lang-ko">학부 인턴</span>
+                </div>
+              </div>
+              <div class="member-card">
+                <div class="member-name">
+                  <span class="lang-en">Jong-Soo Park</span>
+                  <span class="lang-ko">박종수</span>
+                </div>
+                <div class="member-role">
+                  <span class="lang-en">Undergrad Intern</span>
+                  <span class="lang-ko">학부 인턴</span>
+                </div>
+              </div>
+              <div class="member-card">
+                <div class="member-name">
+                  <span class="lang-en">Ji-Ho Tak</span>
+                  <span class="lang-ko">탁지호</span>
+                </div>
+                <div class="member-role">
+                  <span class="lang-en">Undergrad Intern</span>
+                  <span class="lang-ko">학부 인턴</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="about-photo-container">
+          <img src="images/bonwookoo_headshot_2.jpeg" alt="Bon Woo Koo" class="about-photo">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research Interests Section -->
+  <section id="research" class="research-section">
+    <div class="container">
+      <h2 class="section-title">
+        <span class="lang-en">Main Research Interests</span>
+        <span class="lang-ko">주요 연구 분야</span>
+      </h2>
+      <div class="research-grid">
+        <div class="research-card">
+          <h3 class="research-title">
+            <span class="lang-en">AI for Urban Design</span>
+            <span class="lang-ko">도시설계를 위한 인공지능</span>
+          </h3>
+          <p class="research-description">
+            <span class="lang-en">
+              Integrating artificial intelligence into various urban design fields including urban planning,
+              urban regeneration, and district-level planning to perform and evaluate urban design based on
+              optimal performance criteria.
+            </span>
+            <span class="lang-ko">
+              도시설계, 지구단위계획, 도시재생 등 다양한 도시설계 영역에 인공지능을 접목하여,
+              새로운 평가지표를 개발 & 적용하여 설계안을 만들고 성능지표에 기반한 평가 방법을 개발하고 있습니다.
+            </span>
+          </p>
+          <div class="research-projects">
+            <h4 class="projects-subtitle">
+              <span class="lang-en">On-going projects</span>
+              <span class="lang-ko">진행 중인 연구</span>
+            </h4>
+            <ul class="projects-list">
+              <li>
+                <span class="lang-en">Hybrid predictive and generative AI for urban environment assessment</span>
+                <span class="lang-ko">도시환경 진단을 위한 다양한 지표를 개발 위한 예측·생성형 AI 모델 개발</span>
+              </li>
+              <li>
+                <span class="lang-en">Development of open-source object detection models for hard-to-detect design elements</span>
+                <span class="lang-ko">기존 모델이 잘 잡지 못하는 도시설계 요소를 위한 오픈소스 객체탐지 모델 개발</span>
+              </li>
+              <li>
+                <span class="lang-en">Computer vision model development for street usage behavior classification</span>
+                <span class="lang-ko">거리 이용 행태 분류를 위한 컴퓨터 비전 모델 개발</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="research-card">
+          <h3 class="research-title">
+            <span class="lang-en">Urban Design for Walkable, Runnable, and Wheelable Cities</span>
+            <span class="lang-ko">걷고 달리고 좋으며 휠체어-친화적인 도시설계</span>
+          </h3>
+          <p class="research-description">
+            <span class="lang-en">
+              Research focused on enabling all city residents to engage in comfortable and pleasant active
+              transportation, thereby creating more vibrant and livable urban environments.
+            </span>
+            <span class="lang-ko">
+              모든 도시 거주자가 편안하고 즐겁게 걷고, 달리고, 휠체어·유모차 등으로 이동할 수 있는
+              환경을 조성함으로써, 활력 있고 살기 좋은 도시를 만드는 설계 전략을 연구합니다.
+            </span>
+          </p>
+          <div class="research-projects">
+            <h4 class="projects-subtitle">
+              <span class="lang-en">On-going projects</span>
+              <span class="lang-ko">진행 중인 연구</span>
+            </h4>
+            <ul class="projects-list">
+              <li>
+                <span class="lang-en">Development of Seoul-specific evaluation index for walking, running, rolling environments</span>
+                <span class="lang-ko">서울시 특성을 반영한 보행·러닝·휠링 환경 평가 지수 개발</span>
+              </li>
+              <li>
+                <span class="lang-en">Microclimate assessment and improvement of pedestrian environments through urban form and green spaces</span>
+                <span class="lang-ko">도시형태와 녹지구조를 활용한 미기후 분석 및 보행환경 개선 방안 연구</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="research-card">
+          <h3 class="research-title">
+            <span class="lang-en">Urban Design for Equitable and Just Cities</span>
+            <span class="lang-ko">공정하고 공평한 도시를 위한 설계</span>
+          </h3>
+          <p class="research-description">
+            <span class="lang-en">
+              Developing urban design strategies that promote social equity and environmental justice, ensuring
+              fair distribution of urban amenities and opportunities across all communities.
+            </span>
+            <span class="lang-ko">
+              도시 내 다양한 집단 간에 공원, 보행환경, 서비스 접근성 등이 공정하게 분배되도록 하는
+              도시설계 전략을 연구하며, 환경 정의와 보행 형평성 관점에서 도시공간을 분석합니다.
+            </span>
+          </p>
+          <div class="research-projects">
+            <h4 class="projects-subtitle">
+              <span class="lang-en">On-going projects</span>
+              <span class="lang-ko">진행 중인 연구</span>
+            </h4>
+            <ul class="projects-list">
+              <li>
+                <span class="lang-en">
+                  Development of adaptive walkability index focusing on vulnerable pedestrians including elderly and children
+                </span>
+                <span class="lang-ko">
+                  고령자·아동 등 보행 취약계층을 중심으로 한 적응형 보행환경 지수 개발
+                </span>
+              </li>
+              <li>
+                <span class="lang-en">
+                  The social and economic impact of inequitable distribution of walkable environments and hilly terrain
+                </span>
+                <span class="lang-ko">
+                  보행 친화 환경과 경사지 분포의 불균형이 사회·경제적 결과에 미치는 영향 분석
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Publications Section -->
+  <section id="publications" class="section">
+    <div class="container">
+      <div class="section-content">
+        <h2 class="section-title">
+          <span class="lang-en">Publications</span>
+          <span class="lang-ko">연구실 논문</span>
+        </h2>
+        <div class="publication-list">
+          
+          <div class="publication-item">
+            <div class="publication-number">2025</div>
+            <div class="publication-content">
+              <div class="publication-title">The vertical premium: Relationship between relative height of properties from real flood elevation and housing prices</div>
+              <div class="publication-authors">Kim, Y., Koo, B. W., & Lee, S.</div>
+              <div class="publication-journal">Cities, 165, 106126.</div>
+              <div class="publication-links">
+                <a href="publications/2025_Kim_et_al_Cities.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1016/j.cities.2024.106126" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2025</div>
+            <div class="publication-content">
+              <div class="publication-title">Mental health facility visits before and after the outbreak of COVID-19: The role of walkable built environment</div>
+              <div class="publication-authors">Han, C., Koo, B. W., & Hwang, U.</div>
+              <div class="publication-journal">Journal of Transport & Health, 42, 102037.</div>
+              <div class="publication-links">
+                <a href="publications/2025_Han_et_al_JTH.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1016/j.jth.2024.102037" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2024</div>
+            <div class="publication-content">
+              <div class="publication-title">Understanding pedestrian movement using urban sensing technologies: the promise of audio-based sensors</div>
+              <div class="publication-authors">Han, C., Seshadri, P., Ding, Y., Posner, N., Koo, B. W., Agrawal, A., Lerch, A., & Guhathakurta, S.</div>
+              <div class="publication-journal">Urban Informatics, 3(1), 22.</div>
+              <div class="publication-links">
+                <a href="publications/2024_Han_et_al_Urban_Informatics.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1007/s44212-024-00053-9" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2024</div>
+            <div class="publication-content">
+              <div class="publication-title">Urban trees and perceived neighborhood safety: Neighborhood upkeep matters</div>
+              <div class="publication-authors">Lee, S., Kim, Y., & Koo, B. W.</div>
+              <div class="publication-journal">Environment and Behavior, 56(3-4), 276-321.</div>
+              <div class="publication-links">
+                <a href="publications/2024_Lee_et_al_EB.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1177/00139165241253729" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2024</div>
+            <div class="publication-content">
+              <div class="publication-title">ASPED: An audio dataset for detecting pedestrians</div>
+              <div class="publication-authors">Seshadri, P., Han, C., Koo, B. W., Posner, N., Guhathakurta, S., & Lerch, A.</div>
+              <div class="publication-journal">ICASSP 2024 - IEEE International Conference on Acoustics, Speech and Signal Processing.</div>
+              <div class="publication-links">
+                <a href="publications/2024_Seshadri_et_al_ICASSP.pdf" target="_blank">PDF</a>
+                <a href="#" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2023</div>
+            <div class="publication-content">
+              <div class="publication-title">Streetscapes as part of servicescapes: Can walkable streetscapes make local businesses more attractive?</div>
+              <div class="publication-authors">Koo, B. W., Hwang, U., & Guhathakurta, S.</div>
+              <div class="publication-journal">Computers, Environment and Urban Systems, 106, 102030.</div>
+              <div class="publication-links">
+                <a href="publications/2023_Koo_et_al_CEUS.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1016/j.compenvurbsys.2023.102030" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2023</div>
+            <div class="publication-content">
+              <div class="publication-title">Associations between tree characteristics and street crime: A case study in downtown Austin, TX</div>
+              <div class="publication-authors">Lee, S., Koo, B. W., & Kim, Y.</div>
+              <div class="publication-journal">Urban Forestry & Urban Greening, 87, 128046.</div>
+              <div class="publication-links">
+                <a href="publications/2023_Lee_et_al_UFG.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1016/j.ufug.2023.128046" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2023</div>
+            <div class="publication-content">
+              <div class="publication-title">Can good microscale pedestrian streetscapes enhance the benefits of macroscale accessible urban form? An automated audit approach using Google street view images</div>
+              <div class="publication-authors">Koo, B. W., Guhathakurta, S., Botchwey, N., & Hipp, A.</div>
+              <div class="publication-journal">Landscape and Urban Planning, 237, 104816.</div>
+              <div class="publication-links">
+                <a href="publications/2023_Koo_et_al_LUP.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1016/j.landurbplan.2023.104816" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2023</div>
+            <div class="publication-content">
+              <div class="publication-title">Environmental equity and spatiotemporal patterns of urban tree canopy in Atlanta</div>
+              <div class="publication-authors">Koo, B. W., Boyd, N., Botchwey, N., & Guhathakurta, S.</div>
+              <div class="publication-journal">Journal of Planning Education and Research, 43(1), 166-181.</div>
+              <div class="publication-links">
+                <a href="publications/2023_Koo_et_al_JPER.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1177/0739456X19864149" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2022</div>
+            <div class="publication-content">
+              <div class="publication-title">Development and validation of automated microscale walkability audit method</div>
+              <div class="publication-authors">Koo, B. W., Guhathakurta, S., & Botchwey, N.</div>
+              <div class="publication-journal">Health and Place, 73(6).</div>
+              <div class="publication-links">
+                <a href="publications/2022_Koo_et_al_HP.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1016/j.healthplace.2021.102693" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2021</div>
+            <div class="publication-content">
+              <div class="publication-title">How are Neighborhood and Street-Level Walkability Factors Associated with Walking Behaviors? A Big Data Approach Using Street View Images</div>
+              <div class="publication-authors">Koo, B. W., Guhathakurta, S., & Botchwey, N.</div>
+              <div class="publication-journal">Environment and Behavior, 00139165211014609.</div>
+              <div class="publication-links">
+                <a href="publications/2021_Koo_et_al_EB.pdf" target="_blank">PDF</a>
+                <a href="https://doi.org/10.1177/00139165211014609" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2021</div>
+            <div class="publication-content">
+              <div class="publication-title">Application for locational intelligence and geospatial navigation (ALIGN): Smart navigation tool for generating routes that meet individual preferences</div>
+              <div class="publication-authors">Zhang, G., Guhathakurta, S., Sanford, J., & Koo, B. W.</div>
+              <div class="publication-journal">Urban informatics and future cities, 191-209.</div>
+              <div class="publication-links">
+                <a href="publications/2021_Zhang_et_al_UIFC.pdf" target="_blank">PDF</a>
+                <a href="#" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2020</div>
+            <div class="publication-content">
+              <div class="publication-title">Spatial modelling and forecasting</div>
+              <div class="publication-authors">Guhathakurta, S., Zhang, G., & Koo, B. W.</div>
+              <div class="publication-journal">Handbook of Planning Support Science. Edward Elgar, 132-152.</div>
+              <div class="publication-links">
+                <a href="publications/2020_Guhathakurta_et_al_HPSS.pdf" target="_blank">PDF</a>
+                <a href="#" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+          <div class="publication-item">
+            <div class="publication-number">2015</div>
+            <div class="publication-content">
+              <div class="publication-title">The Influence of Surrounding Ground Floor Facilities on the Use of Privately Owned Public Spaces in Seoul</div>
+              <div class="publication-authors">Koo, B. W. & Lee, Y.</div>
+              <div class="publication-journal">Journal of Building Construction and Planning Research, 3(2), 95-106.</div>
+              <div class="publication-links">
+                <a href="publications/2015_Koo_Lee_JBCPR.pdf" target="_blank">PDF</a>
+                <a href="http://dx.doi.org/10.4236/jbcpr.2015.32010" target="_blank">DOI</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Section -->
+  <section id="news" class="section">
+    <div class="container">
+      <div class="section-content">
+        <h2 class="section-title">
+          <span class="lang-en">News</span>
+          <span class="lang-ko">소식 & 공지</span>
+        </h2>
+        <p class="placeholder-text">
+          <span class="lang-en">
+            Latest updates on lab activities, conference presentations, new publications,
+            and opportunities for collaboration.
+          </span>
+          <span class="lang-ko">
+            연구실 활동, 학술대회 발표, 신규 논문, 공동연구 및 학생 모집 관련 소식 등을
+            이 공간에서 업데이트할 예정입니다.
+          </span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="section">
+    <div class="container">
+      <div class="section-content">
+        <h2 class="section-title">
+          <span class="lang-en">Contact</span>
+          <span class="lang-ko">연락처</span>
+        </h2>
+        <div class="contact-content">
+          <p class="contact-intro">
+            <span class="lang-en">
+              We are always open to motivated Master's and PhD students who are at the intersection 
+              of data analytics and urban design.
+            </span>
+            <span class="lang-ko">
+              데이터 분석과 도시설계의 접점에 관심이 있는 열정적인 석·박사 과정 학생들의 지원을
+              항상 기다리고 있습니다.
+            </span>
+          </p>
+          <div class="contact-details">
+            <p>
+              <strong>Email:</strong>
+              <span
+                id="email-link"
+                data-email="bonwookoo@yonsei.ac.kr"
+                style="cursor: pointer; text-decoration: underline; opacity: 0.85;"
+              >
+                bonwookoo@yonsei.ac.kr (Click to copy)
+              </span>
+              <span
+                id="copy-notification"
+                style="opacity: 0; transition: opacity 0.3s; margin-left: 10px; font-size: 12px; color: #4CAF50;"
+              >
+                Copied!
+              </span>
+            </p>
+            <p>
+              <strong>
+                <span class="lang-en">Phone:</span>
+                <span class="lang-ko">전화:</span>
+              </strong>
+              +82-2-2123-5890
+            </p>
+            <p>
+              <strong>
+                <span class="lang-en">Address:</span>
+                <span class="lang-ko">주소:</span>
+              </strong><br>
+              <span class="lang-en">
+                Room S404, Engineering Building 1<br>
+                Yonsei University<br>
+                50 Yonsei-ro, Seodaemun-gu<br>
+                Seoul 03722, Republic of Korea
+              </span>
+              <span class="lang-ko">
+                연세대학교 공학원 1공학관 S404호<br>
+                (03722) 서울특별시 서대문구 연세로 50<br>
+                Republic of Korea
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        © 2024 Data-Driven Urban Design Lab, Yonsei University. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    // Navbar scroll effect
+    const navbar = document.getElementById('navbar');
+    const heroSection = document.getElementById('home');
+    
+    window.addEventListener('scroll', () => {
+      const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
+      if (window.scrollY > heroBottom * 0.6) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    });
+
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        const targetId = this.getAttribute('href');
+        if (targetId.length > 1) {
+          e.preventDefault();
+          const target = document.querySelector(targetId);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      });
+    });
+
+    // Email copy handlers (hero + contact)
+    document.addEventListener('DOMContentLoaded', function () {
+      setupEmailCopy('hero-email-link', 'hero-copy-notification');
+      setupEmailCopy('email-link', 'copy-notification');
+
+      function setupEmailCopy(spanId, notifId) {
+        const span = document.getElementById(spanId);
+        const notif = document.getElementById(notifId);
+        if (!span) return;
+
+        const email = span.getAttribute('data-email') || 'bonwookoo@yonsei.ac.kr';
+
+        span.addEventListener('click', function (event) {
+          event.preventDefault();
+          event.stopPropagation();
+
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(email)
+              .then(() => showNotification(notif))
+              .catch(() => fallbackCopy(email, notif));
+          } else {
+            fallbackCopy(email, notif);
+          }
+        });
+      }
+
+      function fallbackCopy(email, notif) {
+        const textarea = document.createElement('textarea');
+        textarea.value = email;
+        textarea.style.position = 'fixed';
+        textarea.style.left = '-9999px';
+        document.body.appendChild(textarea);
+        textarea.select();
+        try {
+          document.execCommand('copy');
+        } catch (err) {
+          console.error('Fallback copy failed:', err);
+        }
+        document.body.removeChild(textarea);
+        showNotification(notif);
+      }
+
+      function showNotification(notif) {
+        if (!notif) return;
+        notif.style.opacity = '1';
+        setTimeout(function () {
+          notif.style.opacity = '0';
+        }, 1500);
+      }
+
+      // Language toggle
+      const body = document.body;
+      const btnKR = document.getElementById('lang-kr-btn');
+      const btnEN = document.getElementById('lang-en-btn');
+
+      btnKR.addEventListener('click', function () {
+        body.classList.remove('lang-en');
+        body.classList.add('lang-ko');
+        btnKR.classList.add('active');
+        btnEN.classList.remove('active');
+      });
+
+      btnEN.addEventListener('click', function () {
+        body.classList.remove('lang-ko');
+        body.classList.add('lang-en');
+        btnEN.classList.add('active');
+        btnKR.classList.remove('active');
+      });
+    });
+  </script>
+</body>
+</html>
