@@ -1,0 +1,297 @@
+/* ---------- Responsive Design ---------- */
+/*
+ * Mobile-first responsive breakpoints
+ * Adjusts layouts for tablet (1200px), mobile (768px), and small mobile (480px)
+ */
+
+@media (max-width: 1200px) {
+  .container {
+    padding: 25px 40px;
+  }
+
+  nav {
+    padding: 15px 40px;
+  }
+
+  .hero-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .hero-left {
+    padding-right: 0;
+  }
+
+  .hero-images {
+    padding-left: 0;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+
+  .hero-image {
+    height: 180px;
+  }
+
+  .about-content {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .about-photo-container {
+    padding-top: 0;
+    justify-content: center;
+  }
+
+  .research-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 20px;
+  }
+
+  nav {
+    padding: 10px 15px;
+  }
+
+  nav.scrolled {
+    padding: 8px 15px;
+  }
+
+  nav ul {
+    gap: 10px;
+    font-size: 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  nav ul li {
+    margin: 2px 0;
+  }
+
+  .nav-logo {
+    height: 22px;
+    max-width: 120px;
+  }
+
+  /* Hide all nav-text on mobile */
+  .nav-logo-text {
+    display: none;
+  }
+
+  .hero {
+    padding-top: 70px;
+    padding-bottom: 40px;
+  }
+
+  .hero-title {
+    font-size: 32px !important;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .hero-subtitle {
+    font-size: 13px !important;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .hero-description {
+    font-size: 14px !important;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  .hero-links {
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+  }
+
+  .hero-links a {
+    font-size: 13px;
+  }
+
+  .section-content {
+    padding: 0;
+  }
+
+  .section-title {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .hero-images {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .hero-image {
+    height: 200px;
+  }
+
+  .about-photo {
+    max-width: 200px;
+  }
+
+  .members-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    align-items: center;
+  }
+
+  .members-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .members-row.principal-row {
+    display: flex;
+  }
+
+  .member-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .member-card.principal {
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+  }
+
+  .member-photo-placeholder {
+    width: 40px;
+    height: 40px;
+  }
+
+  .publication-item {
+    flex-direction: column;
+    gap: 10px;
+    padding: 15px 0;
+  }
+
+  .research-section {
+    padding: 0;
+  }
+
+  .research-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .research-card {
+    padding: 20px;
+    max-width: 100%;
+  }
+
+  .research-image {
+    height: 250px;
+  }
+
+  .research-title {
+    font-size: 18px;
+  }
+
+  .research-description {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  nav {
+    padding: 8px 10px;
+  }
+
+  nav.scrolled {
+    padding: 6px 10px;
+  }
+
+  nav ul {
+    gap: 8px;
+    font-size: 9px;
+    letter-spacing: 0;
+  }
+
+  nav a {
+    padding: 2px 0;
+  }
+
+  .nav-logo {
+    height: 20px;
+    max-width: 100px;
+  }
+
+  .hero {
+    padding-top: 60px;
+    padding-bottom: 30px;
+  }
+
+  .hero-title {
+    font-size: 28px !important;
+    margin-bottom: 15px;
+  }
+
+  .hero-subtitle {
+    font-size: 12px !important;
+    margin-bottom: 12px;
+  }
+
+  .hero-description {
+    font-size: 13px !important;
+    line-height: 1.5;
+  }
+
+  .hero-links a {
+    font-size: 12px;
+    padding: 8px 16px;
+  }
+
+  .section-title {
+    font-size: 18px;
+  }
+
+  .lab-logo {
+    max-width: 280px;
+  }
+
+  .research-image {
+    height: 220px;
+  }
+
+  .research-title {
+    font-size: 17px;
+  }
+
+  .research-description {
+    font-size: 13px;
+  }
+
+  .publication-item {
+    padding: 10px 0;
+  }
+
+  .publication-number {
+    font-size: 16px;
+    min-width: 40px;
+  }
+
+  .publication-title {
+    font-size: 13px;
+  }
+
+  .publication-authors,
+  .publication-journal {
+    font-size: 11px;
+  }
+
+  .publication-links a {
+    font-size: 10px;
+    padding: 2px 8px;
+  }
+}

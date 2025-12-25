@@ -1,0 +1,587 @@
+/* ---------- Visualization Modal ---------- */
+/*
+ * Modal overlay for interactive visualizations
+ * Includes accessibility features: keyboard nav, focus trap, ARIA
+ */
+
+/* Clickable visualization cards */
+.viz-card {
+  cursor: pointer;
+  outline: none;
+}
+
+.viz-card:focus {
+  outline: 2px solid rgba(0, 102, 255, 0.5);
+  outline-offset: 4px;
+}
+
+/* Modal container - hidden by default */
+.viz-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2000;
+  overflow: hidden;
+}
+
+.viz-modal[aria-hidden="false"] {
+  display: block;
+}
+
+/* Semi-transparent backdrop */
+.viz-modal-backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.425);
+  backdrop-filter: blur(5px);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Main modal content container */
+.viz-modal-content {
+  position: relative;
+  width: 90%;
+  max-width: 1200px;
+  max-height: 85vh;
+  margin: 5vh auto;
+  background: #FFFFFF;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  overflow: hidden;
+  animation: slideUp 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+/* Close button */
+.viz-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 50%;
+  color: #1d1d1f;
+  font-size: 24px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.viz-modal-close:hover {
+  background: rgba(0, 0, 0, 0.1);
+  transform: rotate(90deg);
+}
+
+.viz-modal-close:focus {
+  outline: 2px solid rgba(0, 102, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* Modal header */
+.viz-modal-header {
+  padding: 30px 80px 20px 30px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(0, 0, 0, 0.02);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+.viz-modal-header h2 {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin: 0;
+  letter-spacing: -0.02em;
+  flex: 1;
+}
+
+.cv-modal-links {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.cv-link-icon {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0066FF;
+  border-radius: 8px;
+  color: #FFFFFF;
+  font-size: 18px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  box-shadow: 0 2px 4px rgba(0, 102, 255, 0.2);
+}
+
+.cv-link-icon:hover {
+  background: #0052CC;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 102, 255, 0.3);
+}
+
+/* Modal body - scrollable content area */
+.viz-modal-body {
+  padding: 30px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+/* Description text */
+#viz-modal-description {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #6E6E73;
+  margin-bottom: 30px;
+  font-weight: 300;
+}
+
+/* Visualization canvas container */
+#viz-canvas-container {
+  width: 100%;
+  min-height: 400px;
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Loading state */
+#viz-canvas-container.loading::after {
+  content: "Loading visualization...";
+  color: #86868B;
+  font-size: 14px;
+  font-style: italic;
+}
+
+/* Canvas element styling */
+#viz-canvas-container canvas,
+#viz-canvas-container svg {
+  max-width: 100%;
+  max-height: 500px;
+  display: block;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .viz-modal-content {
+    width: 95%;
+    max-height: 90vh;
+    margin: 3vh auto;
+  }
+
+  .viz-modal-header {
+    padding: 20px 60px 15px 20px;
+  }
+
+  .viz-modal-header h2 {
+    font-size: 20px;
+  }
+
+  .viz-modal-body {
+    padding: 20px;
+  }
+
+  .viz-modal-close {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    top: 15px;
+    right: 15px;
+  }
+
+  #viz-modal-description {
+    font-size: 14px;
+    margin-bottom: 20px;
+  }
+
+  #viz-canvas-container {
+    min-height: 300px;
+  }
+}
+
+@media (max-width: 480px) {
+  .viz-modal-content {
+    width: 100%;
+    max-height: 100vh;
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .viz-modal-header h2 {
+    font-size: 18px;
+  }
+
+  #viz-canvas-container {
+    min-height: 250px;
+  }
+}
+
+/* ---------- CV Modal ---------- */
+.cv-content {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cv-section {
+  margin-bottom: 30px;
+}
+
+.cv-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #1d1d1f;
+  margin-bottom: 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.cv-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.cv-section li {
+  margin-bottom: 12px;
+  padding-left: 20px;
+  position: relative;
+  line-height: 1.6;
+  font-size: 14px;
+  color: #6E6E73;
+}
+
+.cv-section li::before {
+  content: '•';
+  position: absolute;
+  left: 0;
+  color: #86868B;
+}
+
+.cv-section p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #6E6E73;
+  margin: 0;
+}
+
+/* ---------- Publication Overview Modal ---------- */
+.overview-modal-content {
+  max-width: 900px;
+}
+
+.overview-content {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #1d1d1f;
+}
+
+.overview-content h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4ECDC4;
+  margin: 25px 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+.overview-content h3:first-child {
+  margin-top: 0;
+}
+
+.overview-content p {
+  margin-bottom: 15px;
+  color: #6E6E73;
+}
+
+.overview-content ul,
+.overview-content ol {
+  margin-bottom: 15px;
+  padding-left: 25px;
+}
+
+.overview-content li {
+  margin-bottom: 8px;
+  color: #6E6E73;
+}
+
+.overview-content strong {
+  color: #1d1d1f;
+  font-weight: 600;
+}
+
+.overview-content em {
+  color: rgba(78, 205, 196, 0.9);
+  font-style: normal;
+}
+
+.overview-highlight {
+  background: rgba(78, 205, 196, 0.1);
+  border-left: 3px solid #4ECDC4;
+  padding: 15px;
+  margin: 20px 0;
+  border-radius: 4px;
+}
+
+.overview-highlight p {
+  margin: 0;
+}
+
+/* Overview sections */
+.overview-section {
+  margin-bottom: 30px;
+}
+
+.overview-section h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #4ECDC4;
+  margin: 25px 0 15px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(78, 205, 196, 0.3);
+}
+
+.overview-section h4 {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 15px 0 10px 0;
+}
+
+/* Chart containers */
+.chart-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.chart-container {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 16px;
+  min-width: 0;
+  overflow: hidden;
+  max-height: 280px;
+}
+
+.chart-container canvas {
+  max-width: 70%;
+  max-height: 200px !important;
+  height: auto !important;
+}
+
+.chart-container h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-align: center;
+  color: #1d1d1f;
+}
+
+.chart-caption {
+  font-size: 12px;
+  color: #86868B;
+  margin-top: 10px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Context stats */
+.context-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.stat-box {
+  background: rgba(78, 205, 196, 0.1);
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #4ECDC4;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #6E6E73;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Methodology list */
+.methodology-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.methodology-list li {
+  background: rgba(0, 0, 0, 0.02);
+  border-left: 3px solid rgba(78, 205, 196, 0.5);
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  border-radius: 4px;
+}
+
+/* Results list */
+.results-list {
+  counter-reset: results-counter;
+  list-style: none;
+  padding-left: 0;
+}
+
+.results-list li {
+  counter-increment: results-counter;
+  position: relative;
+  padding-left: 50px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.results-list li:last-child {
+  border-bottom: none;
+}
+
+.results-list li::before {
+  content: counter(results-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 35px;
+  height: 35px;
+  background: rgba(78, 205, 196, 0.2);
+  color: #4ECDC4;
+  border: 2px solid rgba(78, 205, 196, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 16px;
+}
+
+/* Implications grid */
+.implications-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 20px 0;
+}
+
+.implication-box {
+  background: rgba(0, 0, 0, 0.02);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.implication-box h4 {
+  color: #4ECDC4;
+  margin-top: 0;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.implication-box ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.implication-box li {
+  position: relative;
+  padding-left: 25px;
+  margin-bottom: 10px;
+}
+
+.implication-box li::before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #4ECDC4;
+  font-weight: bold;
+}
+
+/* Innovation box */
+.innovation-box {
+  background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(255, 107, 107, 0.1) 100%);
+  border: 1px solid rgba(78, 205, 196, 0.3);
+  border-radius: 8px;
+  padding: 20px;
+  margin-top: 30px;
+}
+
+.innovation-box h3 {
+  border-bottom: none;
+  color: #4ECDC4;
+  margin-top: 0;
+}
+
+/* Responsive design for charts */
+@media (max-width: 768px) {
+  .chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .context-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .implications-grid {
+    grid-template-columns: 1fr;
+  }
+}

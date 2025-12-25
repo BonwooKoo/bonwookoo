@@ -4,737 +4,48 @@
   <meta charset="UTF-8">
   <title>Data-Driven Urban Design Lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <style>
-    /* ---------- Base ---------- */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
 
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
-
-    body {
-      background-color: #0a0a0a;
-      color: #ffffff;
-      font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
-      font-weight: 400;
-      line-height: 1.6;
-      overflow-x: hidden;
-    }
-
-    a {
-      color: #ffffff;
-      text-decoration: none;
-      transition: opacity 0.3s ease;
-    }
-
-    a:hover {
-      opacity: 0.7;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 1800px;
-      margin: 0 auto;
-      padding: 20px 60px;
-    }
-
-    /* ---------- Language visibility ---------- */
-    body.lang-en .lang-en { display: inline; }
-    body.lang-en .lang-ko { display: none; }
-
-    body.lang-ko .lang-en { display: none; }
-    body.lang-ko .lang-ko { display: inline; }
-
-    /* block 요소들도 동일하게 동작하도록 */
-    .lang-en, .lang-ko {
-      /* 기본 display는 태그 기본값을 따르고,
-         필요 시 JS에서 show/hide만 조절 */
-    }
-
-    /* ---------- Navigation ---------- */
-    nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      z-index: 1000;
-      padding: 15px 60px;
-      background: rgba(10,10,10,0.95);
-      backdrop-filter: blur(10px);
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.3s ease, padding 0.3s ease;
-    }
-
-    nav.scrolled {
-      padding: 12px 60px;
-    }
-
-    .nav-logo {
-      height: 30px;
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: opacity 0.3s ease, transform 0.3s ease;
-      pointer-events: none;
-    }
-
-    nav.scrolled .nav-logo {
-      opacity: 1;
-      transform: translateY(0);
-      pointer-events: auto;
-    }
-
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: 35px;
-      font-size: 14px;
-      font-weight: 500;
-      letter-spacing: 0.05em;
-      align-items: center;
-    }
-
-    nav a {
-      text-transform: uppercase;
-      opacity: 0.8;
-      transition: opacity 0.3s ease;
-    }
-
-    nav a:hover {
-      opacity: 1;
-    }
-
-    /* Language toggle buttons */
-    .lang-toggle {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin-left: 10px;
-    }
-
-    .lang-btn {
-      background: none;
-      border: none;
-      color: #ffffff;
-      font-size: 13px;
-      cursor: pointer;
-      opacity: 0.6;
-      padding: 0;
-      text-transform: uppercase;
-    }
-
-    .lang-btn.active {
-      opacity: 1;
-      text-decoration: underline;
-    }
-
-    .lang-separator {
-      opacity: 0.4;
-      font-size: 12px;
-    }
-
-    /* ---------- Hero Section ---------- */
-    .hero {
-      min-height: auto;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 60px;
-      padding-bottom: 26px;
-    }
-
-    .hero-content {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr;
-      gap: 40px;
-      align-items: center;
-    }
-
-    .hero-left {
-      padding-right: 20px;
-    }
-
-    .lab-logo {
-      width: 100%;
-      max-width: 450px;
-      height: auto;
-      margin-bottom: 0px;
-    }
-
-    .hero-description {
-      font-size: 16px;
-      line-height: 1.4;
-      margin-bottom: 10px;
-      font-weight: 300;
-      color: rgba(255, 255, 255, 0.9);
-    }
-
-    .hero-links {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 8px;
-    }
-
-    .hero-links a {
-      color: rgba(255, 255, 255, 0.8);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      padding-bottom: 2px;
-      transition: all 0.3s ease;
-    }
-
-    .hero-links a:hover {
-      color: #ffffff;
-      border-bottom-color: #ffffff;
-    }
-
-    .hero-links .clickable-email {
-      color: rgba(255, 255, 255, 0.8);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-      padding-bottom: 2px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .hero-links .clickable-email:hover {
-      color: #ffffff;
-      border-bottom-color: #ffffff;
-    }
-
-    .hero-copy-note {
-      opacity: 0;
-      margin-left: 8px;
-      font-size: 12px;
-      color: #4CAF50;
-      transition: opacity 0.3s ease;
-    }
-
-    .department {
-      font-size: 14px; /* 기존 그대로 */
-      color: rgba(255, 255, 255, 0.5);
-      font-weight: 300;
-      letter-spacing: 0.01em;
-      font-style: italic;
-      margin-bottom: 30px;  /* ← 이 줄 추가 (값은 10~20px 사이에서 취향대로 조정) */
-    }
-
-    .hero-images {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 15px;
-      padding-left: 30px;
-    }
-
-    .hero-image {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border: 0.5px solid rgba(255, 255, 255, 0.1);
-      transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .hero-image:hover {
-      transform: scale(1.02);
-      opacity: 0.9;
-    }
-
-    /* ---------- About Section ---------- */
-    .about-section {
-      padding: 39px 0 22px 0;
-      background-color: #0a0a0a;
-    }
-
-    .about-content {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 40px;
-      align-items: start;
-    }
-
-    .section-title {
-      font-size: 26px;
-      font-weight: 600;
-      margin-bottom: 10px;
-      letter-spacing: -0.02em;
-    }
-
-    .about-text {
-      font-size: 14px;
-      line-height: 1.4;
-      color: rgba(255, 255, 255, 0.85);
-      font-weight: 300;
-    }
-
-    .about-text p {
-      margin-bottom: 10px;
-    }
-
-    .about-photo-container {
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      padding-top: 20px;
-    }
-
-    .about-photo {
-      width: 100%;
-      max-width: 280px;
-      height: auto;
-      filter: grayscale(20%);
-      border: 0.5px solid rgba(255, 255, 255, 0.1);
-    }
-
-    /* ---------- Members Section ---------- */
-    .members-section {
-      margin-top: 20px;
-    }
-
-    .subsection-title {
-      font-size: 18px;
-      font-weight: 500;
-      margin-bottom: 10px;
-      letter-spacing: -0.01em;
-    }
-
-    .members-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 10px;
-      margin-top: 10px;
-      max-width: 85%;
-    }
-
-    .member-card {
-      padding: 10px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 0.5px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    .member-card:hover {
-      background: rgba(255, 255, 255, 0.06);
-      transform: translateY(-2px);
-    }
-
-    .member-name {
-      font-size: 14px;
-      font-weight: 500;
-      margin-bottom: 2px;
-    }
-
-    .member-role {
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.6);
-    }
-
-    /* ---------- Publications Section ---------- */
-    .section {
-      padding: 30px 0;
-    }
-
-    .section-content {
-      width: 100%;
-      max-width: 1800px;
-      margin: 0 auto;
-      padding: 0 60px;
-    }
-
-    .publication-list {
-      margin-top: 15px;
-    }
-
-    .publication-item {
-      display: flex;
-      gap: 20px;
-      padding: 12px 0;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      transition: all 0.3s ease;
-    }
-
-    .publication-item:hover {
-      background: rgba(255, 255, 255, 0.02);
-      padding-left: 20px;
-      margin-left: -20px;
-      padding-right: 20px;
-      margin-right: -20px;
-    }
-
-    .publication-number {
-      font-size: 20px;
-      font-weight: 600;
-      color: rgba(255, 255, 255, 0.4);
-      min-width: 50px;
-    }
-
-    .publication-content {
-      flex: 1;
-    }
-
-    .publication-title {
-      font-size: 15px;
-      font-weight: 500;
-      line-height: 1.3;
-      margin-bottom: 4px;
-    }
-
-    .publication-authors {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 2px;
-    }
-
-    .publication-journal {
-      font-size: 13px;
-      color: rgba(255, 255, 255, 0.5);
-      font-style: italic;
-      margin-bottom: 6px;
-    }
-
-    .publication-links {
-      display: flex;
-      gap: 12px;
-    }
-
-    .publication-links a {
-      font-size: 12px;
-      padding: 3px 10px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      transition: all 0.3s ease;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .publication-links a:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.5);
-    }
-
-    /* ---------- Contact Section ---------- */
-    .contact-content {
-      max-width: 800px;
-      margin-top: 10px;
-    }
-
-    .contact-intro {
-      font-size: 14px;
-      line-height: 1.4;
-      color: rgba(255, 255, 255, 0.85);
-      margin-bottom: 15px;
-    }
-
-    .contact-details {
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .contact-details p {
-      margin-bottom: 8px;
-    }
-
-    .contact-details strong {
-      font-weight: 600;
-      color: #ffffff;
-    }
-
-    /* ---------- Footer ---------- */
-    footer {
-      background: rgba(255, 255, 255, 0.02);
-      padding: 20px 0;
-      margin-top: 30px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .footer-content {
-      text-align: center;
-      font-size: 12px;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 0.02em;
-    }
-
-    /* ---------- Research Interests Section ---------- */
-    .research-section {
-      padding: 22px 0 30px 0;
-      background-color: #0a0a0a;
-    }
-
-    .research-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 30px;
-      margin-top: 20px;
-    }
-
-    .research-card {
-      padding: 25px;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
-    }
-
-    .research-card:hover {
-      background: rgba(255, 255, 255, 0.05);
-      transform: translateY(-3px);
-      border-color: rgba(255, 255, 255, 0.2);
-    }
-
-    .research-title {
-      font-size: 18px;
-      font-weight: 600;
-      margin-bottom: 12px;
-      color: #ffffff;
-      line-height: 1.3;
-    }
-
-    .research-description {
-      font-size: 14px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.7);
-      font-weight: 300;
-      margin-bottom: 20px;
-    }
-
-    .research-projects {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .projects-subtitle {
-      font-size: 14px;
-      font-weight: 500;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 10px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .projects-list {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .projects-list li {
-      font-size: 13px;
-      line-height: 1.5;
-      color: rgba(255, 255, 255, 0.6);
-      margin-bottom: 8px;
-      padding-left: 18px;
-      position: relative;
-    }
-
-    .projects-list li::before {
-      content: "•";
-      position: absolute;
-      left: 0;
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 16px;
-      line-height: 1;
-      top: 2px;
-    }
-
-    /* ---------- Placeholder Text ---------- */
-    .placeholder-text {
-      font-size: 14px;
-      line-height: 1.4;
-      color: rgba(255, 255, 255, 0.6);
-      font-style: italic;
-      max-width: 800px;
-    }
-
-    /* ---------- Responsive Design ---------- */
-    @media (max-width: 1200px) {
-      .container {
-        padding: 25px 40px;
-      }
-      
-      nav {
-        padding: 15px 40px;
-      }
-      
-      .hero-content {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-      
-      .hero-left {
-        padding-right: 0;
-      }
-      
-      .hero-images {
-        padding-left: 0;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 12px;
-      }
-
-      .hero-image {
-        height: 180px;
-      }
-      
-      .about-content {
-        grid-template-columns: 1fr;
-        gap: 40px;
-      }
-      
-      .about-photo-container {
-        padding-top: 0;
-      }
-
-      .research-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 20px;
-      }
-      
-      nav {
-        padding: 10px 15px;
-      }
-
-      nav.scrolled {
-        padding: 8px 15px;
-      }
-      
-      nav ul {
-        gap: 10px;
-        font-size: 10px;
-        flex-wrap: wrap;
-        justify-content: flex-end;
-      }
-
-      nav ul li {
-        margin: 2px 0;
-      }
-      
-      .nav-logo {
-        height: 22px;
-        max-width: 120px;
-      }
-      
-      .hero {
-        padding-top: 70px;
-      }
-      
-      .section-title {
-        font-size: 20px;
-        margin-bottom: 15px;
-      }
-      
-      .hero-images {
-        grid-template-columns: 1fr;
-        gap: 10px;
-      }
-
-      .hero-image {
-        height: 200px;
-      }
-      
-      .members-grid {
-        grid-template-columns: 1fr;
-        gap: 12px;
-      }
-      
-      .publication-item {
-        flex-direction: column;
-        gap: 10px;
-        padding: 15px 0;
-      }
-
-      .research-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-      }
-
-      .research-card {
-        padding: 20px;
-      }
-
-      .research-title {
-        font-size: 16px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      nav {
-        padding: 8px 10px;
-      }
-
-      nav.scrolled {
-        padding: 6px 10px;
-      }
-
-      nav ul {
-        gap: 8px;
-        font-size: 9px;
-        letter-spacing: 0;
-      }
-
-      nav a {
-        padding: 2px 0;
-      }
-
-      .nav-logo {
-        height: 20px;
-        max-width: 100px;
-      }
-
-      .hero {
-        padding-top: 60px;
-      }
-
-      .section-title {
-        font-size: 18px;
-      }
-
-      .lab-logo {
-        max-width: 280px;
-      }
-
-      .publication-item {
-        padding: 10px 0;
-      }
-
-      .publication-number {
-        font-size: 16px;
-        min-width: 40px;
-      }
-
-      .publication-title {
-        font-size: 13px;
-      }
-
-      .publication-authors,
-      .publication-journal {
-        font-size: 11px;
-      }
-
-      .publication-links a {
-        font-size: 10px;
-        padding: 2px 8px;
-      }
-    }
-  </style>
+  <!-- Google Fonts - Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/sections.css">
+  <link rel="stylesheet" href="assets/css/responsive.css">
+  <link rel="stylesheet" href="assets/css/viz.css">
+
+  <!-- Chart.js for publication overview visualizations -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body class="lang-en">
   <!-- Navigation -->
   <nav id="navbar">
-    <a href="#home">
-      <img src="images/ddud_logo.png" alt="DDUD Lab" class="nav-logo">
+    <a href="#home" class="nav-brand">
+      <div class="nav-logo-container">
+        <img src="images/yonsei_logo.jpg" alt="Yonsei Logo" class="nav-logo-icon">
+        <div class="nav-logo-text">
+          <span class="nav-text-black">
+            <span class="lang-en">Department of Urban Planning and Engineering, Yonsei University</span>
+            <span class="lang-ko">연세대학교 도시공학과</span>
+          </span>
+          <span class="nav-text-blue">
+            <span class="lang-en">Bon Woo Koo</span>
+            <span class="lang-ko">구본우 교수 연구실</span>
+          </span>
+        </div>
+      </div>
     </a>
     <ul id="navMenu">
-      <li><a href="#about">About</a></li>
-      <li><a href="#publications">Publications</a></li>
-      <li><a href="#news">News</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#research"><span class="lang-en">Research</span><span class="lang-ko">연구</span></a></li>
+      <li><a href="#publications"><span class="lang-en">Publications</span><span class="lang-ko">논문</span></a></li>
+      <li><a href="#about"><span class="lang-en">About</span><span class="lang-ko">소개</span></a></li>
+      <li><a href="#news"><span class="lang-en">News</span><span class="lang-ko">소식</span></a></li>
       <li class="lang-toggle">
         <button id="lang-kr-btn" class="lang-btn">KR</button>
         <span class="lang-separator">/</span>
@@ -748,10 +59,13 @@
     <div class="container">
       <div class="hero-content">
         <div class="hero-left">
-          <img src="images/ddud_logo.png" alt="Data-Driven Urban Design Lab" class="lab-logo">
+          <h1 class="hero-title">
+            <span class="hero-text-black">Data-Driven</span>
+            <span class="hero-text-gradient">Urban Design Lab</span>
+          </h1>
           <p class="department">
             <span class="lang-en">Department of Urban Planning and Engineering, Yonsei University</span>
-            <span class="lang-ko">Department of Urban Planning and Engineering, Yonsei University</span>
+            <span class="lang-ko">연세대학교 도시공학과 / 구본우 교수 연구실</span>
           </p>
 
           <p class="hero-description">
@@ -767,135 +81,8 @@
               쾌적한 도시환경을 만드는 방법을 탐구합니다.
             </span>
           </p>
-
-          <p class="hero-links">
-            <a href="https://scholar.google.com/citations?user=m37bGGwAAAAJ&hl=en" target="_blank">Google Scholar</a> | 
-            <a href="https://www.researchgate.net/profile/Bon-Woo-Koo?ev=hdr_xprf" target="_blank">ResearchGate</a> |
-            <span
-              id="hero-email-link"
-              class="clickable-email"
-              data-email="bonwookoo@yonsei.ac.kr"
-            >
-              Email
-            </span>
-            <span id="hero-copy-notification" class="hero-copy-note">Copied!</span>
-          </p>
-
-
         </div>
 
-        <div class="hero-images">
-          <img src="images/landingimage1.jpg" alt="Urban network visualization 1" class="hero-image">
-          <img src="images/landingimage2.jpg" alt="Urban network visualization 2" class="hero-image">
-          <img src="images/landingimage3.jpg" alt="Urban analysis visualization" class="hero-image">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="about-section">
-    <div class="container">
-      <div class="about-content">
-        <div>
-          <h2 class="section-title">
-            <span class="lang-en">About Us</span>
-            <span class="lang-ko">연구실 소개</span>
-          </h2>
-          <div class="about-text">
-            <p>
-              <span class="lang-en">
-                We are a group of people with a shared passion for integrating data analytics and
-                urban design. Led by Bon Woo Koo, we collect or create, analyze, visualize,
-                and communicate diverse urban data to better design our cities. We work from the
-                scales of individual blocks to entire metropolitan regions, combining urban design
-                principles with GIS, spatial statistics, and cutting-edge artificial intelligence.
-              </span>
-              <span class="lang-ko">
-                우리는 데이터 분석과 도시설계를 통합하는 데 공통된 관심을 가진 연구자들의 모임입니다.
-                구본우 교수를 중심으로 다양한 도시 데이터를 수집·생성하고, 이를 분석·시각화·소통하여
-                더 나은 도시를 설계하는 방법을 연구합니다. 개별 블록에서부터 대도시권 규모에 이르기까지,
-                도시설계 이론을 GIS, 공간통계, 인공지능 기법과 결합하여 연구를 수행합니다.
-              </span>
-            </p>
-            <p>
-              <span class="lang-en">
-                We learn from one another, challenge ideas together, and collaborate to envision
-                better cities. We are always open to motivated Master's and PhD students who are
-                at the intersection of data analytics and urban design.
-              </span>
-              <span class="lang-ko">
-                우리는 서로에게 배우고, 아이디어를 비판적으로 검토하며, 다양한 협업을 통해
-                더 나은 도시의 모습을 함께 그려갑니다. 데이터 분석과 도시설계의 접점에 관심을 가진
-                열정적인 석·박사 과정 학생들의 참여를 언제나 환영합니다.
-              </span>
-            </p>
-          </div>
-          
-          <!-- Members Section -->
-          <div class="members-section">
-            <h3 class="subsection-title">
-              <span class="lang-en">Current Members</span>
-              <span class="lang-ko">구성원</span>
-            </h3>
-            <div class="members-grid">
-              <div class="member-card">
-                <div class="member-name">
-                  <span class="lang-en">Bon Woo Koo</span>
-                  <span class="lang-ko">구본우</span>
-                </div>
-                <div class="member-role">
-                  <span class="lang-en">Principal Investigator</span>
-                  <span class="lang-ko">책임연구자 (교수)</span>
-                </div>
-              </div>
-              <div class="member-card">
-                <div class="member-name">
-                  <span class="lang-en">Jong-Geun Kim</span>
-                  <span class="lang-ko">김종근</span>
-                </div>
-                <div class="member-role">
-                  <span class="lang-en">Master's Student</span>
-                  <span class="lang-ko">석사과정</span>
-                </div>
-              </div>
-              <div class="member-card">
-                <div class="member-name">
-                  <span class="lang-en">Dong-Yeon Kim</span>
-                  <span class="lang-ko">김동연</span>
-                </div>
-                <div class="member-role">
-                  <span class="lang-en">Undergrad Intern</span>
-                  <span class="lang-ko">학부 인턴</span>
-                </div>
-              </div>
-              <div class="member-card">
-                <div class="member-name">
-                  <span class="lang-en">Jong-Soo Park</span>
-                  <span class="lang-ko">박종수</span>
-                </div>
-                <div class="member-role">
-                  <span class="lang-en">Undergrad Intern</span>
-                  <span class="lang-ko">학부 인턴</span>
-                </div>
-              </div>
-              <div class="member-card">
-                <div class="member-name">
-                  <span class="lang-en">Ji-Ho Tak</span>
-                  <span class="lang-ko">탁지호</span>
-                </div>
-                <div class="member-role">
-                  <span class="lang-en">Undergrad Intern</span>
-                  <span class="lang-ko">학부 인턴</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        
-        <div class="about-photo-container">
-          <img src="images/bonwookoo_headshot_2.jpeg" alt="Bon Woo Koo" class="about-photo">
-        </div>
       </div>
     </div>
   </section>
@@ -903,12 +90,22 @@
   <!-- Research Interests Section -->
   <section id="research" class="research-section">
     <div class="container">
-      <h2 class="section-title">
-        <span class="lang-en">Main Research Interests</span>
-        <span class="lang-ko">주요 연구 분야</span>
-      </h2>
-      <div class="research-grid">
+      <div class="section-content">
+        <h2 class="section-title">
+          <span class="lang-en">Main Research Interests</span>
+          <span class="lang-ko">주요 연구 분야</span>
+        </h2>
+        <div class="research-grid">
         <div class="research-card">
+          <div class="research-image-container">
+            <img src="images/landingimage1.jpg"
+                 alt="Urban network visualization"
+                 class="research-image viz-card"
+                 data-project-id="urban-network"
+                 role="button"
+                 tabindex="0"
+                 aria-label="Click to view urban network visualization">
+          </div>
           <h3 class="research-title">
             <span class="lang-en">AI for Urban Design</span>
             <span class="lang-ko">도시설계를 위한 인공지능</span>
@@ -947,6 +144,14 @@
         </div>
 
         <div class="research-card">
+          <div class="research-image-container">
+            <a href="cluster-dashboard.html" class="research-image-link">
+              <img src="images/landingimage2.jpg"
+                   alt="Seoul Street Cluster Analysis"
+                   class="research-image"
+                   aria-label="Go to interactive cluster dashboard">
+            </a>
+          </div>
           <h3 class="research-title">
             <span class="lang-en">Urban Design for Walkable, Runnable, and Wheelable Cities</span>
             <span class="lang-ko">걷고 달리고 좋으며 휠체어-친화적인 도시설계</span>
@@ -980,6 +185,15 @@
         </div>
 
         <div class="research-card">
+          <div class="research-image-container">
+            <img src="images/landingimage3.jpg"
+                 alt="Environmental equity visualization"
+                 class="research-image viz-card"
+                 data-project-id="spatial-equity"
+                 role="button"
+                 tabindex="0"
+                 aria-label="Click to view environmental equity analysis">
+          </div>
           <h3 class="research-title">
             <span class="lang-en">Urban Design for Equitable and Just Cities</span>
             <span class="lang-ko">공정하고 공평한 도시를 위한 설계</span>
@@ -1028,12 +242,13 @@
     <div class="container">
       <div class="section-content">
         <h2 class="section-title">
-          <span class="lang-en">Publications</span>
-          <span class="lang-ko">연구실 논문</span>
+          <span class="lang-en">Selected Publications</span>
+          <span class="lang-ko">주요 논문</span>
         </h2>
-        <div class="publication-list">
+        <div class="selected-publications-card">
+          <div class="publication-list selected-publications">
           
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2025</div>
             <div class="publication-content">
               <div class="publication-title">The vertical premium: Relationship between relative height of properties from real flood elevation and housing prices</div>
@@ -1042,11 +257,12 @@
               <div class="publication-links">
                 <a href="publications/2025_Kim_et_al_Cities.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1016/j.cities.2024.106126" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="vertical-premium">Overview</button>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2025</div>
             <div class="publication-content">
               <div class="publication-title">Mental health facility visits before and after the outbreak of COVID-19: The role of walkable built environment</div>
@@ -1055,11 +271,12 @@
               <div class="publication-links">
                 <a href="publications/2025_Han_et_al_JTH.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1016/j.jth.2024.102037" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="mental-health-covid">Overview</button>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2024</div>
             <div class="publication-content">
               <div class="publication-title">Understanding pedestrian movement using urban sensing technologies: the promise of audio-based sensors</div>
@@ -1068,24 +285,24 @@
               <div class="publication-links">
                 <a href="publications/2024_Han_et_al_Urban_Informatics.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1007/s44212-024-00053-9" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="audio-sensors-pedestrian">Overview</button>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2024</div>
             <div class="publication-content">
               <div class="publication-title">Urban trees and perceived neighborhood safety: Neighborhood upkeep matters</div>
               <div class="publication-authors">Lee, S., Kim, Y., & Koo, B. W.</div>
               <div class="publication-journal">Environment and Behavior, 56(3-4), 276-321.</div>
               <div class="publication-links">
-                <a href="publications/2024_Lee_et_al_EB.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1177/00139165241253729" target="_blank">DOI</a>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2024</div>
             <div class="publication-content">
               <div class="publication-title">ASPED: An audio dataset for detecting pedestrians</div>
@@ -1094,6 +311,7 @@
               <div class="publication-links">
                 <a href="publications/2024_Seshadri_et_al_ICASSP.pdf" target="_blank">PDF</a>
                 <a href="#" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="asped-dataset">Overview</button>
               </div>
             </div>
           </div>
@@ -1107,11 +325,12 @@
               <div class="publication-links">
                 <a href="publications/2023_Koo_et_al_CEUS.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1016/j.compenvurbsys.2023.102030" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="streetscapes-servicescapes">Overview</button>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2023</div>
             <div class="publication-content">
               <div class="publication-title">Associations between tree characteristics and street crime: A case study in downtown Austin, TX</div>
@@ -1120,6 +339,7 @@
               <div class="publication-links">
                 <a href="publications/2023_Lee_et_al_UFG.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1016/j.ufug.2023.128046" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="tree-crime-austin">Overview</button>
               </div>
             </div>
           </div>
@@ -1133,6 +353,7 @@
               <div class="publication-links">
                 <a href="publications/2023_Koo_et_al_LUP.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1016/j.landurbplan.2023.104816" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="microscale-macroscale-streetscapes">Overview</button>
               </div>
             </div>
           </div>
@@ -1146,6 +367,7 @@
               <div class="publication-links">
                 <a href="publications/2023_Koo_et_al_JPER.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1177/0739456X19864149" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="environmental-equity-atlanta">Overview</button>
               </div>
             </div>
           </div>
@@ -1159,6 +381,7 @@
               <div class="publication-links">
                 <a href="publications/2022_Koo_et_al_HP.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1016/j.healthplace.2021.102693" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="automated-walkability-audit">Overview</button>
               </div>
             </div>
           </div>
@@ -1172,11 +395,12 @@
               <div class="publication-links">
                 <a href="publications/2021_Koo_et_al_EB.pdf" target="_blank">PDF</a>
                 <a href="https://doi.org/10.1177/00139165211014609" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="walkability-walking-behaviors">Overview</button>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2021</div>
             <div class="publication-content">
               <div class="publication-title">Application for locational intelligence and geospatial navigation (ALIGN): Smart navigation tool for generating routes that meet individual preferences</div>
@@ -1185,11 +409,12 @@
               <div class="publication-links">
                 <a href="publications/2021_Zhang_et_al_UIFC.pdf" target="_blank">PDF</a>
                 <a href="#" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="align-navigation">Overview</button>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2020</div>
             <div class="publication-content">
               <div class="publication-title">Spatial modelling and forecasting</div>
@@ -1198,11 +423,12 @@
               <div class="publication-links">
                 <a href="publications/2020_Guhathakurta_et_al_HPSS.pdf" target="_blank">PDF</a>
                 <a href="#" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="spatial-modelling-forecasting">Overview</button>
               </div>
             </div>
           </div>
 
-          <div class="publication-item">
+          <div class="publication-item hidden-publication">
             <div class="publication-number">2015</div>
             <div class="publication-content">
               <div class="publication-title">The Influence of Surrounding Ground Floor Facilities on the Use of Privately Owned Public Spaces in Seoul</div>
@@ -1211,10 +437,155 @@
               <div class="publication-links">
                 <a href="publications/2015_Koo_Lee_JBCPR.pdf" target="_blank">PDF</a>
                 <a href="http://dx.doi.org/10.4236/jbcpr.2015.32010" target="_blank">DOI</a>
+                <button class="overview-btn" data-pub-id="pops-seoul">Overview</button>
               </div>
             </div>
           </div>
 
+          </div>
+        </div>
+
+        <div class="view-all-container" style="text-align: center; margin-top: 30px;">
+          <button id="view-all-publications-btn" class="view-all-btn">
+            <span class="lang-en">View All Publications</span>
+            <span class="lang-ko">전체 논문 보기</span>
+          </button>
+        </div>
+      </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="section-content">
+        <h2 class="section-title">
+          <span class="lang-en">About Us</span>
+          <span class="lang-ko">연구실 소개</span>
+        </h2>
+        <div class="about-content">
+        <div class="about-photo-container">
+          <img src="images/bonwookoo_headshot_2.jpeg"
+               alt="Bon Woo Koo"
+               class="about-photo"
+               role="button"
+               tabindex="0"
+               aria-label="Click to view CV">
+        </div>
+
+        <div>
+          <div class="about-text">
+            <p>
+              <span class="lang-en">
+                We are a group of people with a shared passion for integrating data analytics and
+                urban design. Led by Bon Woo Koo, we collect or create, analyze, visualize,
+                and communicate diverse urban data to better design our cities. We work from the
+                scales of individual blocks to entire metropolitan regions, combining urban design
+                principles with GIS, spatial statistics, and cutting-edge artificial intelligence.
+              </span>
+              <span class="lang-ko">
+                우리는 데이터 분석과 도시설계를 통합하는 데 공통된 관심을 가진 연구자들의 모임입니다.
+                구본우 교수를 중심으로 다양한 도시 데이터를 수집·생성하고, 이를 분석·시각화·소통하여
+                더 나은 도시를 설계하는 방법을 연구합니다. 개별 블록에서부터 대도시권 규모에 이르기까지,
+                도시설계 이론을 GIS, 공간통계, 인공지능 기법과 결합하여 연구를 수행합니다.
+              </span>
+            </p>
+            <p>
+              <span class="lang-en">
+                We learn from one another, challenge ideas together, and collaborate to envision
+                better cities. We are always open to motivated Master's and PhD students who are
+                at the intersection of data analytics and urban design.
+              </span>
+              <span class="lang-ko">
+                우리는 서로에게 배우고, 아이디어를 비판적으로 검토하며, 다양한 협업을 통해
+                더 나은 도시의 모습을 함께 그려갑니다. 데이터 분석과 도시설계의 접점에 관심을 가진
+                열정적인 석·박사 과정 학생들의 참여를 언제나 환영합니다.
+              </span>
+            </p>
+          </div>
+
+          <!-- Members Section -->
+          <div class="members-section">
+            <h3 class="subsection-title">
+              <span class="lang-en">Current Members</span>
+              <span class="lang-ko">구성원</span>
+            </h3>
+            <div class="members-grid">
+              <!-- Principal Investigator Row -->
+              <div class="members-row principal-row">
+                <div class="member-card principal clickable" id="bon-woo-card" role="button" tabindex="0" aria-label="Click to view CV">
+                  <div class="member-info">
+                    <div class="member-name">
+                      <span class="lang-en">Bon Woo Koo</span>
+                      <span class="lang-ko">구본우</span>
+                    </div>
+                    <div class="member-role">
+                      <span class="lang-en">Principal Investigator</span>
+                      <span class="lang-ko">책임연구자 (교수)</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Students Row -->
+              <div class="members-row">
+                <div class="member-card">
+                  <div class="member-info">
+                    <div class="member-name">
+                      <span class="lang-en">Jong-Geun Kim</span>
+                      <span class="lang-ko">김종근</span>
+                    </div>
+                    <div class="member-role">
+                      <span class="lang-en">Master's Student</span>
+                      <span class="lang-ko">석사과정</span>
+                    </div>
+                  </div>
+                  <div class="member-photo-placeholder"></div>
+                </div>
+                <div class="member-card">
+                  <div class="member-info">
+                    <div class="member-name">
+                      <span class="lang-en">Dong-Yeon Kim</span>
+                      <span class="lang-ko">김동연</span>
+                    </div>
+                    <div class="member-role">
+                      <span class="lang-en">Undergrad Intern</span>
+                      <span class="lang-ko">학부 인턴</span>
+                    </div>
+                  </div>
+                  <div class="member-photo-placeholder"></div>
+                </div>
+                <div class="member-card">
+                  <div class="member-info">
+                    <div class="member-name">
+                      <span class="lang-en">Jong-Soo Park</span>
+                      <span class="lang-ko">박종수</span>
+                    </div>
+                    <div class="member-role">
+                      <span class="lang-en">Undergrad Intern</span>
+                      <span class="lang-ko">학부 인턴</span>
+                    </div>
+                  </div>
+                  <div class="member-photo-placeholder"></div>
+                </div>
+                <div class="member-card">
+                  <div class="member-info">
+                    <div class="member-name">
+                      <span class="lang-en">Ji-Ho Tak</span>
+                      <span class="lang-ko">탁지호</span>
+                    </div>
+                    <div class="member-role">
+                      <span class="lang-en">Undergrad Intern</span>
+                      <span class="lang-ko">학부 인턴</span>
+                    </div>
+                  </div>
+                  <div class="member-photo-placeholder"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -1317,104 +688,138 @@
     </div>
   </footer>
 
+  <!-- All Publications Modal -->
+  <div id="all-publications-modal" class="viz-modal" aria-hidden="true" role="dialog">
+    <div class="viz-modal-backdrop"></div>
+    <div class="viz-modal-content">
+      <button class="viz-modal-close" aria-label="Close modal">&times;</button>
+      <div class="viz-modal-header">
+        <h2>
+          <span class="lang-en">All Publications</span>
+          <span class="lang-ko">전체 논문</span>
+        </h2>
+      </div>
+      <div class="viz-modal-body" id="all-publications-list">
+        <!-- All publications will be dynamically inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Visualization Modal -->
+  <div id="viz-modal" class="viz-modal" aria-hidden="true" role="dialog" aria-labelledby="viz-modal-title">
+    <div class="viz-modal-backdrop"></div>
+    <div class="viz-modal-content">
+      <button class="viz-modal-close" aria-label="Close modal">&times;</button>
+      <div class="viz-modal-header">
+        <h2 id="viz-modal-title"></h2>
+      </div>
+      <div class="viz-modal-body">
+        <div id="viz-modal-description"></div>
+        <div id="viz-canvas-container"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Publication Overview Modal -->
+  <div id="overview-modal" class="viz-modal" aria-hidden="true" role="dialog" aria-labelledby="overview-modal-title">
+    <div class="viz-modal-backdrop"></div>
+    <div class="viz-modal-content overview-modal-content">
+      <button class="viz-modal-close" aria-label="Close modal">&times;</button>
+      <div class="viz-modal-header">
+        <h2 id="overview-modal-title"></h2>
+      </div>
+      <div class="viz-modal-body overview-content">
+        <!-- Dynamic content loaded by JavaScript -->
+      </div>
+    </div>
+  </div>
+
+  <!-- CV Modal -->
+  <div id="cv-modal" class="viz-modal" aria-hidden="true" role="dialog" aria-labelledby="cv-modal-title">
+    <div class="viz-modal-backdrop"></div>
+    <div class="viz-modal-content">
+      <button class="viz-modal-close" aria-label="Close modal">&times;</button>
+      <div class="viz-modal-header">
+        <h2 id="cv-modal-title">
+          <span class="lang-en">Bon Woo Koo, Ph.D.</span>
+          <span class="lang-ko">구본우 박사</span>
+        </h2>
+        <div class="cv-modal-links">
+          <a href="https://scholar.google.com/citations?user=m37bGGwAAAAJ&hl=en" target="_blank" class="cv-link-icon" aria-label="Google Scholar">
+            <i class="fas fa-graduation-cap"></i>
+          </a>
+          <a href="https://www.researchgate.net/profile/Bon-Woo-Koo?ev=hdr_xprf" target="_blank" class="cv-link-icon" aria-label="ResearchGate">
+            <i class="fab fa-researchgate"></i>
+          </a>
+          <span class="cv-link-icon clickable-email" data-email="bonwookoo@yonsei.ac.kr" aria-label="Email">
+            <i class="fas fa-envelope"></i>
+          </span>
+        </div>
+      </div>
+      <div class="viz-modal-body cv-content">
+        <div class="cv-section">
+          <h3>
+            <span class="lang-en">Academic Appointments</span>
+            <span class="lang-ko">학력 및 경력</span>
+          </h3>
+          <ul>
+            <li>
+              <span class="lang-en"><strong>2024.03 - Current:</strong> Assistant Professor, Department of Urban Planning and Engineering, Yonsei University</span>
+              <span class="lang-ko"><strong>2024.03 - 현재:</strong> 연세대학교 도시공학과 조교수</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>2023.07 - 2024.12:</strong> Assistant Professor, School of Urban and Regional Planning, Toronto Metropolitan University</span>
+              <span class="lang-ko"><strong>2023.07 - 2024.12:</strong> 토론토 메트로폴리탄 대학교 도시지역계획학과 조교수</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>2021.11 - 2023.06:</strong> Post-Doc, Center for Spatial Planning Analytics and Visualization, Georgia Institute of Technology, Atlanta</span>
+              <span class="lang-ko"><strong>2021.11 - 2023.06:</strong> 조지아공과대학교 공간계획분석시각화센터 박사후연구원</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="cv-section">
+          <h3>
+            <span class="lang-en">Education</span>
+            <span class="lang-ko">학위</span>
+          </h3>
+          <ul>
+            <li>
+              <span class="lang-en"><strong>2021:</strong> Ph.D. in City and Regional Planning, Georgia Institute of Technology, Atlanta</span>
+              <span class="lang-ko"><strong>2021:</strong> 도시지역계획학 박사, 조지아공과대학교</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>2017:</strong> MCRP in City and Regional Planning, Georgia Institute of Technology, Atlanta</span>
+              <span class="lang-ko"><strong>2017:</strong> 도시지역계획학 석사, 조지아공과대학교</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>2014:</strong> MLA in Landscape Architecture, Seoul National University</span>
+              <span class="lang-ko"><strong>2014:</strong> 조경학 석사, 서울대학교</span>
+            </li>
+            <li>
+              <span class="lang-en"><strong>2012:</strong> BFA in Spatial Design, Kookmin University</span>
+              <span class="lang-ko"><strong>2012:</strong> 공간디자인학 학사, 국민대학교</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="cv-section">
+          <h3>
+            <span class="lang-en">Research Interests</span>
+            <span class="lang-ko">연구 관심사</span>
+          </h3>
+          <p>
+            <span class="lang-en">Urban design; Walkability; Urban Analytics; Healthy Cities</span>
+            <span class="lang-ko">도시설계; 보행성; 도시분석; 건강도시</span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- JavaScript -->
-  <script>
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    const heroSection = document.getElementById('home');
-    
-    window.addEventListener('scroll', () => {
-      const heroBottom = heroSection.offsetTop + heroSection.offsetHeight;
-      if (window.scrollY > heroBottom * 0.6) {
-        navbar.classList.add('scrolled');
-      } else {
-        navbar.classList.remove('scrolled');
-      }
-    });
-
-    // Smooth scroll for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', function (e) {
-        const targetId = this.getAttribute('href');
-        if (targetId.length > 1) {
-          e.preventDefault();
-          const target = document.querySelector(targetId);
-          if (target) {
-            target.scrollIntoView({ behavior: 'smooth' });
-          }
-        }
-      });
-    });
-
-    // Email copy handlers (hero + contact)
-    document.addEventListener('DOMContentLoaded', function () {
-      setupEmailCopy('hero-email-link', 'hero-copy-notification');
-      setupEmailCopy('email-link', 'copy-notification');
-
-      function setupEmailCopy(spanId, notifId) {
-        const span = document.getElementById(spanId);
-        const notif = document.getElementById(notifId);
-        if (!span) return;
-
-        const email = span.getAttribute('data-email') || 'bonwookoo@yonsei.ac.kr';
-
-        span.addEventListener('click', function (event) {
-          event.preventDefault();
-          event.stopPropagation();
-
-          if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(email)
-              .then(() => showNotification(notif))
-              .catch(() => fallbackCopy(email, notif));
-          } else {
-            fallbackCopy(email, notif);
-          }
-        });
-      }
-
-      function fallbackCopy(email, notif) {
-        const textarea = document.createElement('textarea');
-        textarea.value = email;
-        textarea.style.position = 'fixed';
-        textarea.style.left = '-9999px';
-        document.body.appendChild(textarea);
-        textarea.select();
-        try {
-          document.execCommand('copy');
-        } catch (err) {
-          console.error('Fallback copy failed:', err);
-        }
-        document.body.removeChild(textarea);
-        showNotification(notif);
-      }
-
-      function showNotification(notif) {
-        if (!notif) return;
-        notif.style.opacity = '1';
-        setTimeout(function () {
-          notif.style.opacity = '0';
-        }, 1500);
-      }
-
-      // Language toggle
-      const body = document.body;
-      const btnKR = document.getElementById('lang-kr-btn');
-      const btnEN = document.getElementById('lang-en-btn');
-
-      btnKR.addEventListener('click', function () {
-        body.classList.remove('lang-en');
-        body.classList.add('lang-ko');
-        btnKR.classList.add('active');
-        btnEN.classList.remove('active');
-      });
-
-      btnEN.addEventListener('click', function () {
-        body.classList.remove('lang-ko');
-        body.classList.add('lang-en');
-        btnEN.classList.add('active');
-        btnKR.classList.remove('active');
-      });
-    });
-  </script>
+  <script src="assets/js/main.js"></script>
+  <script src="assets/js/lang-toggle.js"></script>
+  <script type="module" src="assets/js/viz/index.js"></script>
 </body>
 </html>

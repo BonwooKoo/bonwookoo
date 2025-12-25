@@ -1,0 +1,618 @@
+/**
+ * Dashboard Styles for Cluster Analysis Page
+ *
+ * Layout:
+ * - Fixed navigation at top
+ * - Split view: Map (70%) | Info Panel (30%)
+ * - Responsive: stacks vertically on mobile
+ */
+
+/* ---------- Dashboard Navigation ---------- */
+.dashboard-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 15px 30px;
+  background: rgba(10, 10, 10, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.back-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  color: #ffffff;
+  gap: 12px;
+}
+
+.back-link svg {
+  transition: transform 0.3s ease;
+}
+
+.back-link:hover svg {
+  transform: translateX(-4px);
+}
+
+/* ---------- Dashboard Container ---------- */
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  padding-top: 60px;
+}
+
+/* ---------- Map Section ---------- */
+.map-section {
+  flex: 1;
+  position: relative;
+  background: #0a0a0a;
+}
+
+.map-header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 10;
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 20px 25px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  max-width: 500px;
+}
+
+.map-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.02em;
+}
+
+.map-subtitle {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  line-height: 1.5;
+}
+
+/* ---------- Map Container ---------- */
+.map-container {
+  width: 100%;
+  height: 100%;
+}
+
+/* Mapbox overrides for dark theme */
+.mapboxgl-ctrl-bottom-left,
+.mapboxgl-ctrl-bottom-right {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+.mapboxgl-popup-content {
+  background: rgba(10, 10, 10, 0.95);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.mapboxgl-popup-close-button {
+  color: #ffffff;
+  font-size: 20px;
+}
+
+/* ---------- Legend ---------- */
+.map-legend {
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  z-index: 10;
+  background: rgba(10, 10, 10, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.legend-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.legend-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.legend-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.legend-item.legend-active {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.legend-item.legend-active .legend-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.legend-color {
+  width: 24px;
+  height: 4px;
+  border-radius: 2px;
+  transition: all 0.2s ease;
+}
+
+.legend-item.legend-active .legend-color {
+  height: 6px;
+  box-shadow: 0 0 8px currentColor;
+}
+
+.legend-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.8);
+  transition: all 0.2s ease;
+}
+
+/* ---------- Info Panel ---------- */
+.info-panel {
+  width: 400px;
+  background: #0a0a0a;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-panel-content {
+  flex: 1;
+  padding: 30px;
+}
+
+/* Default Info State - Seoul Overview */
+.info-default {
+  padding: 0;
+}
+
+.info-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Cluster Summary Description */
+.cluster-summary {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--cluster-color, #4ECDC4);
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 4px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.cluster-summary p {
+  margin: 0 0 10px 0;
+}
+
+.cluster-summary p:last-child {
+  margin-bottom: 0;
+}
+
+.cluster-summary strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Stats Sections */
+.stats-section {
+  margin-bottom: 30px;
+}
+
+.stats-total {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+}
+
+.stats-total strong {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  color: #4ECDC4;
+  margin-top: 8px;
+}
+
+.stats-subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 15px;
+}
+
+/* Cluster Distribution Bars */
+.cluster-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cluster-bar-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.cluster-bar-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cluster-bar-name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cluster-color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.cluster-bar-bg {
+  height: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+}
+
+.cluster-bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 8px;
+}
+
+.cluster-bar-percent {
+  font-size: 10px;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+/* Characteristic Bars */
+.characteristic-bars {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.char-bar-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.char-bar-label {
+  width: 80px;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: capitalize;
+}
+
+.char-bar-bg {
+  flex: 1;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.char-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4ECDC4, #4A90E2);
+  border-radius: 8px;
+  transition: width 0.6s ease;
+}
+
+.char-bar-value {
+  width: 40px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Info Hint */
+.info-hint {
+  margin-top: 25px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+  text-align: center;
+}
+
+/* Cluster Info State */
+.info-cluster {
+  animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.cluster-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cluster-title {
+  font-size: 22px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.close-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: rotate(90deg);
+}
+
+.close-btn svg {
+  stroke: #ffffff;
+}
+
+/* Radar Chart */
+.chart-container {
+  margin-bottom: 25px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.radar-chart {
+  width: 100%;
+  max-width: 350px;
+  height: auto;
+  display: block;
+}
+
+/* Cluster Description */
+.cluster-description {
+  margin-bottom: 25px;
+}
+
+.description-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.description-text {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.6;
+}
+
+/* Statistics */
+.cluster-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.stat-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* ---------- Loading Overlay ---------- */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 10, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
+
+.loading-overlay.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-text {
+  margin-top: 20px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- Responsive Design ---------- */
+@media (max-width: 1024px) {
+  .dashboard-container {
+    flex-direction: column;
+  }
+
+  .map-section {
+    height: 60vh;
+  }
+
+  .info-panel {
+    width: 100%;
+    height: 40vh;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  .map-header {
+    max-width: calc(100% - 40px);
+  }
+
+  .map-title {
+    font-size: 18px;
+  }
+
+  .map-subtitle {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-nav {
+    padding: 10px 15px;
+  }
+
+  .back-link {
+    font-size: 12px;
+  }
+
+  .map-header {
+    top: 10px;
+    left: 10px;
+    padding: 15px;
+  }
+
+  .map-title {
+    font-size: 16px;
+  }
+
+  .map-subtitle {
+    font-size: 11px;
+  }
+
+  .map-legend {
+    bottom: 10px;
+    left: 10px;
+    padding: 10px;
+  }
+
+  .legend-title {
+    font-size: 11px;
+  }
+
+  .legend-label {
+    font-size: 11px;
+  }
+
+  .info-panel-content {
+    padding: 20px;
+  }
+
+  .cluster-title {
+    font-size: 18px;
+  }
+}

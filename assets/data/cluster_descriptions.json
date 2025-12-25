@@ -1,0 +1,26 @@
+{
+  "1": {
+    "en": "Road-dominant commercial corridors with moderate building density. Wide arterial streets with high vehicle traffic but limited pedestrian infrastructure.",
+    "ko": "도로 중심의 상업 가로. 넓은 간선도로로 차량 통행이 많지만 보행 인프라는 제한적입니다."
+  },
+  "2": {
+    "en": "Tree-lined residential streets with generous sidewalks. High vegetation coverage creating shaded, comfortable pedestrian environments.",
+    "ko": "나무가 많은 주거 가로. 넓은 보도와 높은 녹지율로 그늘진 쾌적한 보행환경을 제공합니다."
+  },
+  "3": {
+    "en": "Dense urban cores with high-rise buildings. Limited sky visibility and minimal green space, typical of central business districts.",
+    "ko": "고층 건물이 밀집한 도심 지역. 제한된 하늘 가시율과 최소한의 녹지, 전형적인 업무 중심지입니다."
+  },
+  "4": {
+    "en": "Active mixed-use neighborhoods with high pedestrian activity. Wide sidewalks accommodate significant foot traffic in vibrant urban areas.",
+    "ko": "보행 활동이 활발한 복합용도 지역. 넓은 보도가 많은 보행자를 수용하는 활기찬 도시 공간입니다."
+  },
+  "5": {
+    "en": "Balanced urban streets with mixed characteristics. Moderate levels across all metrics, representing typical Seoul neighborhoods.",
+    "ko": "균형잡힌 도시 가로. 모든 지표에서 중간 수준을 보이는 전형적인 서울 주거지역입니다."
+  },
+  "6": {
+    "en": "Open suburban or park-adjacent areas. High sky visibility with significant green coverage but minimal built infrastructure.",
+    "ko": "개방된 교외 또는 공원 인접 지역. 높은 하늘 가시율과 녹지 면적, 최소한의 건축 인프라가 특징입니다."
+  }
+}

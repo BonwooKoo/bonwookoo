@@ -1,0 +1,35 @@
+{
+  "urban-network": {
+    "title": {
+      "en": "Urban Network Analysis",
+      "ko": "도시 네트워크 분석"
+    },
+    "description": {
+      "en": "Interactive visualization of urban street networks using graph theory and spatial analysis. This research demonstrates how network connectivity patterns influence pedestrian movement and urban accessibility.",
+      "ko": "그래프 이론과 공간 분석을 활용한 도시 가로망 네트워크의 인터랙티브 시각화입니다. 네트워크 연결 패턴이 보행자 이동과 도시 접근성에 미치는 영향을 연구합니다."
+    },
+    "vizType": "network"
+  },
+  "walkability-analysis": {
+    "title": {
+      "en": "Walkability Analysis",
+      "ko": "보행 환경 분석"
+    },
+    "description": {
+      "en": "Automated microscale walkability assessment using computer vision and street view imagery. This visualization shows how machine learning models evaluate pedestrian environment quality across different urban contexts.",
+      "ko": "컴퓨터 비전과 거리뷰 이미지를 활용한 미시적 보행환경 자동 평가 시스템입니다. 머신러닝 모델이 다양한 도시 환경에서 보행 환경 품질을 어떻게 평가하는지 보여줍니다."
+    },
+    "vizType": "analysis"
+  },
+  "spatial-equity": {
+    "title": {
+      "en": "Environmental Equity Analysis",
+      "ko": "환경 형평성 분석"
+    },
+    "description": {
+      "en": "Spatiotemporal patterns of urban amenities and their distribution across different communities. This interactive map reveals disparities in access to parks, walkable environments, and public services.",
+      "ko": "도시 편의시설의 시공간적 분포 패턴과 지역사회 간 분배를 분석합니다. 공원, 보행 환경, 공공 서비스 접근성의 격차를 인터랙티브 지도로 시각화합니다."
+    },
+    "vizType": "heatmap"
+  }
+}

@@ -1,0 +1,58 @@
+/* ---------- Base Styles ---------- */
+/*
+ * Foundation styles: resets, typography, containers
+ * These apply globally across the entire site
+ */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  background-color: #F5F5F7;
+  color: #1d1d1f;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  color: #0066FF;
+  text-decoration: none;
+  transition: opacity 0.3s ease;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+
+.container {
+  width: 100%;
+  max-width: 1800px;
+  margin: 0 auto;
+  padding: 0 60px;
+}
+
+/* ---------- Language Visibility ---------- */
+/*
+ * Controls which language content is visible
+ * body.lang-en shows English, body.lang-ko shows Korean
+ */
+
+body.lang-en .lang-en { display: inline; }
+body.lang-en .lang-ko { display: none; }
+
+body.lang-ko .lang-en { display: none; }
+body.lang-ko .lang-ko { display: inline; }
+
+.lang-en, .lang-ko {
+  /* Display is controlled by body class above */
+}

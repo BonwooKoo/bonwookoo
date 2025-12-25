@@ -1,0 +1,56 @@
+[
+  {
+    "cluster": "1",
+    "building": 0.3624,
+    "sidewalk": 0.3804,
+    "road": 1,
+    "tree": 0.2844,
+    "sky": 0.6835,
+    "person": 0.1013
+  },
+  {
+    "cluster": "2",
+    "building": 0.3853,
+    "sidewalk": 0.5837,
+    "road": 0.3053,
+    "tree": 1,
+    "sky": 0,
+    "person": 0.1169
+  },
+  {
+    "cluster": "3",
+    "building": 1,
+    "sidewalk": 0.8284,
+    "road": 0,
+    "tree": 0.0102,
+    "sky": 0.0403,
+    "person": 0.1951
+  },
+  {
+    "cluster": "4",
+    "building": 0.8695,
+    "sidewalk": 1,
+    "road": 0.3837,
+    "tree": 0,
+    "sky": 0.0912,
+    "person": 1
+  },
+  {
+    "cluster": "5",
+    "building": 0.7349,
+    "sidewalk": 0.7636,
+    "road": 0.7952,
+    "tree": 0.1153,
+    "sky": 0.1842,
+    "person": 0.578
+  },
+  {
+    "cluster": "6",
+    "building": 0,
+    "sidewalk": 0,
+    "road": 0.5619,
+    "tree": 0.644,
+    "sky": 1,
+    "person": 0
+  }
+]

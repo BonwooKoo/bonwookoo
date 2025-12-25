@@ -1,0 +1,38 @@
+{
+  "total_segments": 130265,
+  "num_clusters": 6,
+  "cluster_distribution": {
+    "1": {
+      "count": 30399,
+      "percentage": 23.34
+    },
+    "2": {
+      "count": 18996,
+      "percentage": 14.58
+    },
+    "3": {
+      "count": 53024,
+      "percentage": 40.7
+    },
+    "4": {
+      "count": 14886,
+      "percentage": 11.43
+    },
+    "5": {
+      "count": 6840,
+      "percentage": 5.25
+    },
+    "6": {
+      "count": 6120,
+      "percentage": 4.7
+    }
+  },
+  "seoul_average_characteristics": {
+    "building": 0.69,
+    "sidewalk": 0.67,
+    "road": 0.39,
+    "tree": 0.25,
+    "sky": 0.24,
+    "person": 0.26
+  }
+}

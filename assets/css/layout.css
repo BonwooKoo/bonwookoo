@@ -1,0 +1,145 @@
+/* ---------- Navigation ---------- */
+/*
+ * Fixed navigation bar with scroll effects
+ * Shows logo when scrolled past hero section
+ */
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 15px 60px;
+  background: #FFFFFF;
+  backdrop-filter: blur(10px);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s ease, padding 0.3s ease;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+nav.scrolled {
+  padding: 12px 60px;
+}
+
+.nav-brand {
+  text-decoration: none;
+  display: block;
+}
+
+.nav-logo-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  pointer-events: auto;
+}
+
+.nav-logo-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: cover;
+  border-radius: 6px;
+  flex-shrink: 0;
+}
+
+.nav-logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.nav-text-black {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1d1d1f;
+  letter-spacing: -0.01em;
+}
+
+.nav-text-blue {
+  font-size: 13px;
+  font-weight: 600;
+  background: linear-gradient(90deg, #7B68EE 0%, #4169E1 50%, #0066FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 35px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  align-items: center;
+}
+
+nav a {
+  text-transform: uppercase;
+  color: #1d1d1f;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+nav a:hover {
+  opacity: 1;
+  color: #0066FF;
+}
+
+/* ---------- Language Toggle ---------- */
+/*
+ * KR / EN language switcher in navigation
+ * Active language is underlined
+ */
+
+.lang-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-left: 10px;
+}
+
+.lang-btn {
+  background: none;
+  border: none;
+  color: #1d1d1f;
+  font-size: 13px;
+  cursor: pointer;
+  opacity: 0.6;
+  padding: 0;
+  text-transform: uppercase;
+}
+
+.lang-btn.active {
+  opacity: 1;
+  color: #0066FF;
+  text-decoration: underline;
+}
+
+.lang-separator {
+  opacity: 0.4;
+  font-size: 12px;
+}
+
+/* ---------- Footer ---------- */
+footer {
+  background: rgba(0, 0, 0, 0.02);
+  padding: 20px 0;
+  margin-top: 30px;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.footer-content {
+  text-align: center;
+  font-size: 12px;
+  color: #86868B;
+  letter-spacing: 0.02em;
+}
