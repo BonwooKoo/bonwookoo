@@ -157,8 +157,7 @@
 }
 
 .about-text {
-  font-size: 14px;
-  line-height: 1.4;
+  font-size: 18px;
   color: #6E6E73;
   font-weight: 300;
 }
@@ -211,13 +210,26 @@
 
 .members-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 10px;
+  max-width: 100%;
+}
+
+@media (min-width: 769px) {
+  .members-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .members-row.principal-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+}
+
+@media (min-width: 769px) {
+  .members-row.principal-row {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .member-card {
@@ -367,7 +379,7 @@
 }
 
 .research-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   margin-bottom: 8px;
   margin-top: 12px;
@@ -377,8 +389,7 @@
 }
 
 .research-description {
-  font-size: 13px;
-  line-height: 1.4;
+  font-size: 17px;
   color: #6E6E73;
   font-weight: 300;
   margin-bottom: 12px;
@@ -393,11 +404,10 @@
 }
 
 .projects-subtitle {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   color: #1d1d1f;
   margin-bottom: 10px;
-  text-transform: uppercase;
   letter-spacing: 0.05em;
 }
 
@@ -407,7 +417,7 @@
 }
 
 .projects-list li {
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.5;
   color: #86868B;
   margin-bottom: 8px;

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Vertical Premium - Research Overview</title>
+  <link rel="stylesheet" href="assets/css/overview.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- Hero Section -->
+  <section class="overview-hero">
+    <div class="hero-content">
+      <div class="breadcrumb">
+        <a href="index.html#publications">← Back to Publications</a>
+      </div>
+      <h1 class="hero-title">The Vertical Premium</h1>
+      <p class="hero-subtitle">Relationship between relative height of properties from real flood elevation and housing prices</p>
+      <div class="hero-meta">
+        <span class="author">Kim, Y., Koo, B. W., & Lee, S.</span>
+        <span class="separator">•</span>
+        <span class="journal">Cities, 165, 106126</span>
+        <span class="separator">•</span>
+        <span class="year">2025</span>
+      </div>
+      <div class="hero-actions">
+        <a href="publications/2025_Kim_et_al_Cities.pdf" class="btn btn-primary" target="_blank">Read Full Paper</a>
+        <a href="https://doi.org/10.1016/j.cities.2024.106126" class="btn btn-secondary" target="_blank">View on Publisher Site</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Finding Banner -->
+  <section class="key-finding">
+    <div class="container">
+      <div class="finding-icon">💡</div>
+      <h2>Key Finding</h2>
+      <p class="finding-text">Properties located higher above flood elevation command <strong>significant price premiums</strong> of approximately <strong>2-3% per meter</strong>, even after controlling for other factors. This effect amplified dramatically after the 2013 Calgary flood.</p>
+    </div>
+  </section>
+
+  <!-- Research Question -->
+  <section class="content-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number">01</span>
+        <h2>Research Question</h2>
+      </div>
+      <div class="two-column">
+        <div class="column">
+          <p class="lead-text">How does the <span class="highlight">relative height</span> of a property from flood elevation affect housing prices?</p>
+          <p>This study examines the <em>"vertical premium"</em> - the additional value homebuyers place on properties situated higher above potential flood levels.</p>
+          <div class="info-box">
+            <h4>Why It Matters</h4>
+            <ul>
+              <li>Flood risk is a growing concern in urban areas</li>
+              <li>Traditional flood zone maps use binary classifications</li>
+              <li>Actual elevation differences are continuous, not binary</li>
+              <li>Understanding vertical premiums can inform better planning</li>
+            </ul>
+          </div>
+        </div>
+        <div class="column">
+          <div class="visual-box">
+            <div class="concept-diagram">
+              <div class="diagram-title">Vertical Premium Concept</div>
+              <canvas id="conceptChart" width="400" height="300"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Study Context -->
+  <section class="content-section bg-light">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number">02</span>
+        <h2>Study Context: 2013 Calgary Flood</h2>
+      </div>
+      <div class="context-grid">
+        <div class="context-card">
+          <div class="card-icon">💰</div>
+          <div class="card-number">$6B+</div>
+          <div class="card-label">Total Damages</div>
+        </div>
+        <div class="context-card">
+          <div class="card-icon">🏠</div>
+          <div class="card-number">100,000+</div>
+          <div class="card-label">Affected Residents</div>
+        </div>
+        <div class="context-card">
+          <div class="card-icon">📊</div>
+          <div class="card-number">Unique</div>
+          <div class="card-label">Natural Experiment</div>
+        </div>
+      </div>
+      <div class="timeline">
+        <h3>Study Timeline</h3>
+        <div class="timeline-container">
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-date">Pre-2013</div>
+              <div class="timeline-text">Baseline housing market analysis</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot highlight"></div>
+            <div class="timeline-content">
+              <div class="timeline-date">June 2013</div>
+              <div class="timeline-text">Catastrophic flood event</div>
+            </div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+              <div class="timeline-date">Post-2013</div>
+              <div class="timeline-text">Changed market behavior analysis</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Methodology -->
+  <section class="content-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number">03</span>
+        <h2>Methodology</h2>
+      </div>
+      <div class="methodology-grid">
+        <div class="method-card">
+          <div class="method-icon">📍</div>
+          <h4>Data Source</h4>
+          <p>Calgary residential property transactions combined with detailed flood elevation maps</p>
+        </div>
+        <div class="method-card">
+          <div class="method-icon">📏</div>
+          <h4>Key Variable</h4>
+          <p>Vertical distance (meters) from property to flood elevation line</p>
+        </div>
+        <div class="method-card">
+          <div class="method-icon">📈</div>
+          <h4>Analysis</h4>
+          <p>Hedonic pricing model with spatial controls and temporal comparison</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="content-section bg-gradient">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number">04</span>
+        <h2>Key Results</h2>
+      </div>
+      <div class="results-container">
+        <div class="result-chart">
+          <h3>Vertical Premium Effect</h3>
+          <canvas id="premiumChart" width="600" height="400"></canvas>
+        </div>
+        <div class="result-insights">
+          <div class="insight-card">
+            <div class="insight-number">1</div>
+            <h4>Vertical Premium Exists</h4>
+            <p>Each additional meter above flood elevation adds approximately <strong>2-3%</strong> to property value</p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-number">2</div>
+            <h4>Post-Flood Amplification</h4>
+            <p>The premium <strong>increased significantly</strong> after the 2013 flood event</p>
+          </div>
+          <div class="insight-card">
+            <div class="insight-number">3</div>
+            <h4>Spatial Variation</h4>
+            <p>Effects are <strong>strongest</strong> in areas with recent flood experience</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Implications -->
+  <section class="content-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-number">05</span>
+        <h2>Implications</h2>
+      </div>
+      <div class="two-column">
+        <div class="implication-box">
+          <div class="box-header urban">
+            <div class="box-icon">🏙️</div>
+            <h3>For Urban Planning</h3>
+          </div>
+          <ul class="implication-list">
+            <li>Prioritize flood mitigation investments in high-value areas</li>
+            <li>Inform zoning policies in flood-prone regions</li>
+            <li>Design equitable disaster recovery strategies</li>
+            <li>Better understand market-based risk valuation</li>
+          </ul>
+        </div>
+        <div class="implication-box">
+          <div class="box-header homeowner">
+            <div class="box-icon">🏡</div>
+            <h3>For Homeowners</h3>
+          </div>
+          <ul class="implication-list">
+            <li>Quantify flood risk impact on property values</li>
+            <li>Make informed home purchase decisions</li>
+            <li>Evaluate elevation-based protection investments</li>
+            <li>Develop better insurance strategies</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Innovation -->
+  <section class="innovation-section">
+    <div class="container">
+      <div class="innovation-content">
+        <div class="innovation-badge">Innovation</div>
+        <h2>Beyond Binary Flood Zones</h2>
+        <p class="innovation-text">This research introduces the concept of <strong>"vertical premium"</strong> as a distinct component of housing value, separate from traditional flood plain designations. Unlike binary flood zone classifications (in/out), it captures the <em>continuous relationship</em> between elevation and value.</p>
+        <div class="comparison-boxes">
+          <div class="compare-box traditional">
+            <h4>Traditional Approach</h4>
+            <div class="binary-visual">
+              <div class="zone in">In Flood Zone</div>
+              <div class="zone out">Out of Flood Zone</div>
+            </div>
+            <p>Binary classification</p>
+          </div>
+          <div class="arrow">→</div>
+          <div class="compare-box new">
+            <h4>Vertical Premium Approach</h4>
+            <div class="gradient-visual">
+              <div class="gradient-bar"></div>
+              <div class="gradient-labels">
+                <span>Low Elevation</span>
+                <span>High Elevation</span>
+              </div>
+            </div>
+            <p>Continuous measurement</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer CTA -->
+  <section class="cta-section">
+    <div class="container">
+      <h2>Explore the Full Research</h2>
+      <p>Read the complete paper for detailed methodology, statistical analysis, and comprehensive findings.</p>
+      <div class="cta-buttons">
+        <a href="publications/2025_Kim_et_al_Cities.pdf" class="btn btn-large btn-primary" target="_blank">Download PDF</a>
+        <a href="https://doi.org/10.1016/j.cities.2024.106126" class="btn btn-large btn-secondary" target="_blank">View on Cities Journal</a>
+      </div>
+    </div>
+  </section>
+
+  <script src="assets/js/overview.js"></script>
+</body>
+</html>

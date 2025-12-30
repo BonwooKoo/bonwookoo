@@ -88,19 +88,23 @@
   }
 
   .hero-title {
-    font-size: 32px !important;
+    font-size: 48px !important;
     text-align: center;
     margin-bottom: 20px;
   }
 
-  .hero-subtitle {
+  .department {
     font-size: 13px !important;
+  }
+
+  .hero-subtitle {
+    font-size: 16px !important;
     text-align: center;
     margin-bottom: 15px;
   }
 
   .hero-description {
-    font-size: 14px !important;
+    font-size: 17px !important;
     line-height: 1.6;
     text-align: center;
   }
@@ -109,10 +113,11 @@
     justify-content: center;
     flex-wrap: wrap;
     gap: 15px;
+    font-size: 15px;
   }
 
   .hero-links a {
-    font-size: 13px;
+    font-size: 15px;
   }
 
   .section-content {
@@ -120,8 +125,8 @@
   }
 
   .section-title {
-    font-size: 20px;
-    margin-bottom: 15px;
+    font-size: 24px;
+    margin-bottom: 20px;
   }
 
   .hero-images {
@@ -135,6 +140,11 @@
 
   .about-photo {
     max-width: 200px;
+  }
+
+  .about-text {
+    font-size: 15px;
+    line-height: 1.6;
   }
 
   .members-grid {
@@ -170,10 +180,34 @@
     height: 40px;
   }
 
+  .member-name {
+    font-size: 16px;
+  }
+
+  .member-role {
+    font-size: 14px;
+  }
+
   .publication-item {
     flex-direction: column;
     gap: 10px;
     padding: 15px 0;
+  }
+
+  .publication-title {
+    font-size: 15px;
+  }
+
+  .publication-authors {
+    font-size: 13px;
+  }
+
+  .publication-journal {
+    font-size: 13px;
+  }
+
+  .publication-number {
+    font-size: 18px;
   }
 
   .research-section {
@@ -195,11 +229,19 @@
   }
 
   .research-title {
-    font-size: 18px;
+    font-size: 17px;
   }
 
   .research-description {
     font-size: 14px;
+  }
+
+  .projects-subtitle {
+    font-size: 13px;
+  }
+
+  .projects-list li {
+    font-size: 12px;
   }
 }
 
@@ -233,8 +275,9 @@
   }
 
   .hero-title {
-    font-size: 28px !important;
+    font-size: 30px !important;
     margin-bottom: 15px;
+    margin-top: 40px;
   }
 
   .hero-subtitle {
@@ -243,7 +286,7 @@
   }
 
   .hero-description {
-    font-size: 13px !important;
+    font-size: 15px !important;
     line-height: 1.5;
   }
 

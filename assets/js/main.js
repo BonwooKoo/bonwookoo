@@ -935,8 +935,15 @@
       // Clear existing content
       modalList.innerHTML = '';
 
+      // Convert NodeList to Array and sort by year (descending)
+      const sortedPublications = Array.from(allPublications).sort((a, b) => {
+        const yearA = parseInt(a.querySelector('.publication-number')?.textContent || '0');
+        const yearB = parseInt(b.querySelector('.publication-number')?.textContent || '0');
+        return yearB - yearA; // Descending order
+      });
+
       // Clone all publication items into modal
-      allPublications.forEach(pub => {
+      sortedPublications.forEach(pub => {
         const clone = pub.cloneNode(true);
         clone.classList.remove('hidden-publication');
         clone.style.display = 'flex';

@@ -1,0 +1,14 @@
+# Mapbox Token Configuration
+config.js
+mapbox-config.js
+
+# Environment files
+.env
+.env.local
+
+# OS files
+.DS_Store
+
+# IDE
+.vscode/
+.idea/
