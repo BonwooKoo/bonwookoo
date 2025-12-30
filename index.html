@@ -127,20 +127,28 @@
             </h4>
             <ul class="projects-list">
               <li>
-                <span class="lang-en">Development of predictive and generative AI for urban environment assessment</span>
-                <span class="lang-ko">도시환경 진단을 위한 다양한 지표를 개발 위한 예측·생성형 AI 모델 개발</span>
+                <span class="lang-en">
+                  Development of predictive and generative AI for urban environment assessment
+                </span>
+                <span class="lang-ko">
+                  도시환경 진단을 위한 다양한 지표를 개발 위한 예측·생성형 AI 모델 개발
+                </span>
               </li>
               <li>
-                <span class="lang-en">Development of open-source object detection models for hard-to-detect design elements</span>
-                <span class="lang-ko">기존 모델이 잘 잡지 못하는 도시설계 요소를 위한 오픈소스 객체탐지 모델 개발</span>
+                <span class="lang-en">
+                  Development of open-source object detection models for hard-to-detect design elements and pedestrian behavior
+                </span>
+                <span class="lang-ko">
+                  기존 모델이 잘 잡지 못하는 도시설계 요소를 위한 오픈소스 객체탐지 모델 개발 및 거리 이용 행태 분류를 위한 컴퓨터 비전 모델 개발
+                </span>
               </li>
               <li>
-                <span class="lang-en">Computer vision model development for street usage behavior classification</span>
-                <span class="lang-ko">거리 이용 행태 분류를 위한 컴퓨터 비전 모델 개발</span>
-              </li>
-              <li>
-                <span class="lang-en">Development of performance evaluation tools for urban design practice</span>
-                <span class="lang-ko">도시설계 실무에 적용 가능한 성능 평가 도구 개발</span>
+                <span class="lang-en">
+                  Development of performance evaluation tools for urban design practice
+                </span>
+                <span class="lang-ko">
+                  도시설계 실무에 적용 가능한 성능 평가 도구 개발
+                </span>
               </li>
             </ul>
           </div>
@@ -177,12 +185,20 @@
             </h4>
             <ul class="projects-list">
               <li>
-                <span class="lang-en">Development of Seoul-specific evaluation index for walking, running, rolling environments</span>
-                <span class="lang-ko">서울시 특성을 반영한 보행·러닝·휠링 환경 평가 지수 개발</span>
+                <span class="lang-en">
+                  Development of Seoul-specific evaluation index for walking, running, rolling environments
+                </span>
+                <span class="lang-ko">
+                  서울시 특성을 반영한 보행·러닝·휠링 환경 평가 지수 개발
+                </span>
               </li>
               <li>
-                <span class="lang-en">Microclimate assessment and improvement of pedestrian environments through urban form and green spaces</span>
-                <span class="lang-ko">도시형태와 녹지구조를 활용한 미기후 분석 및 보행환경 개선 방안 연구</span>
+                <span class="lang-en">
+                  Microclimate assessment and improvement of pedestrian environments through urban form and green spaces
+                </span>
+                <span class="lang-ko">
+                  도시형태와 녹지구조를 활용한 미기후 분석 및 보행환경 개선 방안 연구
+                </span>
               </li>
             </ul>
           </div>
@@ -616,7 +632,7 @@
                 <div class="member-card">
                   <div class="member-info">
                     <div class="member-name">
-                      <span class="lang-en">Hee-Sun Gwon</span>
+                      <span class="lang-en">Hee-Sun Kwon</span>
                       <span class="lang-ko">권희선</span>
                     </div>
                     <div class="member-role">
@@ -770,7 +786,13 @@
     <div class="viz-modal-content overview-modal-content">
       <button class="viz-modal-close" aria-label="Close modal">&times;</button>
       <div class="viz-modal-header">
-        <h2 id="overview-modal-title"></h2>
+        <div class="modal-header-top">
+          <h2 id="overview-modal-title"></h2>
+          <div class="lang-toggle">
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn active" data-lang="ko">KO</button>
+          </div>
+        </div>
       </div>
       <div class="viz-modal-body overview-content">
         <!-- Dynamic content loaded by JavaScript -->
@@ -781,23 +803,31 @@
   <!-- CV Modal -->
   <div id="cv-modal" class="viz-modal" aria-hidden="true" role="dialog" aria-labelledby="cv-modal-title">
     <div class="viz-modal-backdrop"></div>
-    <div class="viz-modal-content">
+    <div class="viz-modal-content cv-modal-content">
       <button class="viz-modal-close" aria-label="Close modal">&times;</button>
       <div class="viz-modal-header">
-        <h2 id="cv-modal-title">
-          <span class="lang-en">Bon Woo Koo, Ph.D.</span>
-          <span class="lang-ko">구본우 박사</span>
-        </h2>
-        <div class="cv-modal-links">
-          <a href="https://scholar.google.com/citations?user=m37bGGwAAAAJ&hl=en" target="_blank" class="cv-link-icon" aria-label="Google Scholar">
-            <i class="fas fa-graduation-cap"></i>
-          </a>
-          <a href="https://www.researchgate.net/profile/Bon-Woo-Koo?ev=hdr_xprf" target="_blank" class="cv-link-icon" aria-label="ResearchGate">
-            <i class="fab fa-researchgate"></i>
-          </a>
-          <span class="cv-link-icon clickable-email" data-email="bonwookoo@yonsei.ac.kr" aria-label="Email">
-            <i class="fas fa-envelope"></i>
-          </span>
+        <div class="modal-header-top">
+          <div class="cv-title-section">
+            <h2 id="cv-modal-title">
+              <span class="lang-en">Bon Woo Koo, Ph.D.</span>
+              <span class="lang-ko">구본우 박사</span>
+            </h2>
+            <div class="cv-modal-links">
+              <a href="https://scholar.google.com/citations?user=m37bGGwAAAAJ&hl=en" target="_blank" class="cv-link-icon" aria-label="Google Scholar">
+                <i class="fas fa-graduation-cap"></i>
+              </a>
+              <a href="https://www.researchgate.net/profile/Bon-Woo-Koo?ev=hdr_xprf" target="_blank" class="cv-link-icon" aria-label="ResearchGate">
+                <i class="fab fa-researchgate"></i>
+              </a>
+              <span class="cv-link-icon clickable-email" data-email="bonwookoo@yonsei.ac.kr" aria-label="Email">
+                <i class="fas fa-envelope"></i>
+              </span>
+            </div>
+          </div>
+          <div class="lang-toggle">
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn active" data-lang="ko">KO</button>
+          </div>
         </div>
       </div>
       <div class="viz-modal-body cv-content">

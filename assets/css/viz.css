@@ -97,6 +97,9 @@
   padding: 30px 80px 20px 30px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   background: rgba(0, 0, 0, 0.02);
+}
+
+.modal-header-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -109,6 +112,13 @@
   color: #1d1d1f;
   margin: 0;
   letter-spacing: -0.02em;
+  flex: 1;
+}
+
+.cv-title-section {
+  display: flex;
+  align-items: center;
+  gap: 20px;
   flex: 1;
 }
 
@@ -262,10 +272,40 @@
   }
 }
 
+/* ---------- Modal Language Toggle ---------- */
+/* Language toggle visibility control */
+.viz-modal-body.lang-en-active .lang-ko {
+  display: none;
+}
+
+.viz-modal-body.lang-en-active .lang-en {
+  display: inline;
+}
+
+.viz-modal-body.lang-ko-active .lang-en {
+  display: none;
+}
+
+.viz-modal-body.lang-ko-active .lang-ko {
+  display: inline;
+}
+
+/* Default state - show Korean */
+.viz-modal-body .lang-en {
+  display: none;
+}
+
+.viz-modal-body .lang-ko {
+  display: inline;
+}
+
 /* ---------- CV Modal ---------- */
+.cv-modal-content {
+  max-width: 900px;
+}
+
 .cv-content {
-  max-width: 800px;
-  margin: 0 auto;
+  text-align: left;
 }
 
 .cv-section {
@@ -279,6 +319,7 @@
   margin-bottom: 15px;
   padding-bottom: 8px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  text-align: left;
 }
 
 .cv-section ul {
@@ -294,6 +335,7 @@
   line-height: 1.6;
   font-size: 14px;
   color: #6E6E73;
+  text-align: left;
 }
 
 .cv-section li::before {
@@ -308,6 +350,7 @@
   line-height: 1.6;
   color: #6E6E73;
   margin: 0;
+  text-align: left;
 }
 
 /* ---------- Publication Overview Modal ---------- */

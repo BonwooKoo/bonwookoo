@@ -85,6 +85,51 @@
   }
 
   /**
+   * SYNC MODAL LANGUAGE WITH MAIN PAGE
+   *
+   * Syncs the modal's language state to match the main page's current language.
+   * Checks document.body classes (lang-ko or lang-en) and applies to modal.
+   */
+  function syncModalLanguageWithMain(modal) {
+    const modalBody = modal.querySelector('.viz-modal-body');
+    const langToggle = modal.querySelector('.lang-toggle');
+
+    if (!modalBody || !langToggle) return;
+
+    // Check main page language
+    const isKorean = document.body.classList.contains('lang-ko');
+    const langBtns = langToggle.querySelectorAll('.lang-btn');
+
+    if (isKorean) {
+      // Set to Korean
+      modalBody.classList.add('lang-ko-active');
+      modalBody.classList.remove('lang-en-active');
+
+      // Update button states
+      langBtns.forEach(btn => {
+        if (btn.getAttribute('data-lang') === 'ko') {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    } else {
+      // Set to English
+      modalBody.classList.add('lang-en-active');
+      modalBody.classList.remove('lang-ko-active');
+
+      // Update button states
+      langBtns.forEach(btn => {
+        if (btn.getAttribute('data-lang') === 'en') {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+    }
+  }
+
+  /**
    * CV MODAL
    *
    * How it works:
@@ -101,6 +146,9 @@
 
     // Open CV modal
     function openCVModal() {
+      // Sync language with main page before showing
+      syncModalLanguageWithMain(cvModal);
+
       cvModal.setAttribute('aria-hidden', 'false');
       cvModal.style.display = 'flex';
       document.body.style.overflow = 'hidden';
@@ -218,6 +266,9 @@
         modalTitle.textContent = 'Publication Overview';
         modalBody.innerHTML = '<p>Overview content is being prepared. Please check back soon or refer to the PDF for full details.</p>';
       }
+
+      // Sync language with main page before showing
+      syncModalLanguageWithMain(overviewModal);
 
       overviewModal.setAttribute('aria-hidden', 'false');
       overviewModal.style.display = 'flex';
@@ -936,7 +987,20 @@
       modalList.innerHTML = '';
 
       // Convert NodeList to Array and sort by year (descending)
+      // Bike lanes paper comes first, then sort by year
       const sortedPublications = Array.from(allPublications).sort((a, b) => {
+        const titleA = a.querySelector('.publication-title')?.textContent || '';
+        const titleB = b.querySelector('.publication-title')?.textContent || '';
+
+        // Check if either is the bike lanes paper
+        const isBikeLanesA = titleA.includes('Automated Detection and Classification of Bike Lanes');
+        const isBikeLanesB = titleB.includes('Automated Detection and Classification of Bike Lanes');
+
+        // If one is bike lanes paper, it comes first
+        if (isBikeLanesA && !isBikeLanesB) return -1;
+        if (!isBikeLanesA && isBikeLanesB) return 1;
+
+        // Otherwise, sort by year (descending)
         const yearA = parseInt(a.querySelector('.publication-number')?.textContent || '0');
         const yearB = parseInt(b.querySelector('.publication-number')?.textContent || '0');
         return yearB - yearA; // Descending order
@@ -984,12 +1048,66 @@
     });
   }
 
+  /**
+   * Initialize modal language toggle buttons
+   */
+  function initModalLangToggle() {
+    // Setup language toggle for overview modal
+    const overviewModal = document.getElementById('overview-modal');
+    if (overviewModal) {
+      const langToggle = overviewModal.querySelector('.lang-toggle');
+      if (langToggle) {
+        setupModalLanguageToggle(langToggle);
+      }
+    }
+
+    // Setup language toggle for CV modal
+    const cvModal = document.getElementById('cv-modal');
+    if (cvModal) {
+      const langToggle = cvModal.querySelector('.lang-toggle');
+      if (langToggle) {
+        setupModalLanguageToggle(langToggle);
+      }
+    }
+  }
+
+  /**
+   * Setup language toggle functionality for a modal
+   */
+  function setupModalLanguageToggle(langToggle) {
+    const langBtns = langToggle.querySelectorAll('.lang-btn');
+
+    langBtns.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const selectedLang = this.getAttribute('data-lang');
+
+        // Update active state
+        langBtns.forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        // Get the modal element
+        const modal = langToggle.closest('.viz-modal');
+        const modalBody = modal.querySelector('.viz-modal-body');
+
+        // Toggle language visibility
+        if (selectedLang === 'en') {
+          modalBody.classList.add('lang-en-active');
+          modalBody.classList.remove('lang-ko-active');
+        } else {
+          modalBody.classList.add('lang-ko-active');
+          modalBody.classList.remove('lang-en-active');
+        }
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function() {
     initNavbarScroll();
     initSmoothScroll();
     initCVModal();
     initOverviewModal();
     initAllPublicationsModal();
+    initModalLangToggle();
   });
 
 })();
