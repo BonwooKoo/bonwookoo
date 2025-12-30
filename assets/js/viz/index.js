@@ -154,17 +154,19 @@ function setupVizCards() {
   const vizCards = document.querySelectorAll('.viz-card');
 
   vizCards.forEach(card => {
+    // TEMPORARILY DISABLED - Will be re-enabled after content is ready for publish
     // Click handler
-    card.addEventListener('click', handleVizCardClick);
+    // card.addEventListener('click', handleVizCardClick);
 
     // Keyboard handler
-    card.addEventListener('keydown', handleVizCardKeydown);
+    // card.addEventListener('keydown', handleVizCardKeydown);
 
     // Visual feedback: add cursor pointer (already in CSS, but good practice)
-    card.style.cursor = 'pointer';
+    // card.style.cursor = 'pointer';
+    card.style.cursor = 'default'; // Show normal cursor since cards are not clickable
   });
 
-  console.log(`Initialized ${vizCards.length} visualization cards`);
+  console.log(`Initialized ${vizCards.length} visualization cards (click functionality disabled)`);
 }
 
 /**
