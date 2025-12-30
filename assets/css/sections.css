@@ -241,7 +241,7 @@
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
 }
 
@@ -263,7 +263,7 @@
 }
 
 .member-links {
-  display: flex;
+  display: none;
   flex-direction: row;
   gap: 8px;
   align-items: center;
@@ -271,14 +271,14 @@
 }
 
 .member-link-icon {
-  width: 30px;
-  height: 30px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 102, 255, 0.08);
+  background: rgba(123, 104, 238, 0.12);
   border-radius: 6px;
-  color: #0066FF;
+  color: #7B68EE;
   font-size: 14px;
   transition: all 0.2s ease;
   cursor: pointer;
@@ -286,8 +286,9 @@
 }
 
 .member-link-icon:hover {
-  background: rgba(0, 102, 255, 0.15);
-  color: #0052CC;
+  background: rgba(123, 104, 238, 0.2);
+  color: #6854D6;
+  transform: translateY(-1px);
 }
 
 .member-card:hover {
@@ -386,7 +387,6 @@
   padding: 0 15px;
   color: #1d1d1f;
   line-height: 1.3;
-  height: 44px;
   display: flex;
   align-items: center;
 }
@@ -398,8 +398,6 @@
   margin-bottom: 12px;
   padding: 0 15px;
   line-height: 1.6;
-  height: 135px;
-  overflow: hidden;
 }
 
 .research-projects {
@@ -407,7 +405,6 @@
   margin-bottom: 15px;
   padding: 10px 15px 25px 15px;
   border-top: 1px solid rgba(0, 0, 0, 0.1);
-  height: 240px;
 }
 
 .projects-subtitle {
@@ -658,4 +655,42 @@
 .member-email-notification.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* Research card responsive spacing */
+@media (max-width: 1200px) {
+  .research-projects {
+    padding: 10px 15px 15px 15px;
+  }
+}
+
+/* Member links - show only on mobile */
+@media (max-width: 768px) {
+  .member-links {
+    display: flex;
+  }
+
+  .projects-list li {
+    font-size: 17px;
+  }
+
+  .projects-list li::before {
+    font-size: 18px;
+  }
+}
+
+/* Research card heights - only fixed on desktop (3 columns) */
+@media (min-width: 1201px) {
+  .research-title {
+    height: 44px;
+  }
+
+  .research-description {
+    height: 135px;
+    overflow: hidden;
+  }
+
+  .research-projects {
+    height: 240px;
+  }
 }
