@@ -176,6 +176,24 @@
       }
     });
 
+    // Add click event to CV badge and CV icon button
+    const cvBadge = document.querySelector('.cv-badge');
+    const cvIconBtn = document.querySelector('.cv-icon-btn');
+
+    if (cvBadge) {
+      cvBadge.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent card click from also firing
+        openCVModal();
+      });
+    }
+
+    if (cvIconBtn) {
+      cvIconBtn.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent card click from also firing
+        openCVModal();
+      });
+    }
+
     // Close button
     const closeBtn = cvModal.querySelector('.viz-modal-close');
     if (closeBtn) {
