@@ -384,8 +384,14 @@ function initMap() {
   // Add navigation controls
   map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
+  // Log map errors
+  map.on('error', function(e) {
+    console.error('Mapbox error:', e.error ? e.error.message : e);
+  });
+
   // When map loads, add street layer
   map.on('load', function() {
+    console.log('✓ Map style loaded successfully');
     addStreetLayer();
     hideLoading();
   });
