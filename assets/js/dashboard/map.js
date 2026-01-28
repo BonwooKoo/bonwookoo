@@ -36,12 +36,32 @@ const CLUSTER_CHARTS = {
 
 // 🎨 Cluster colors (matching legend)
 const CLUSTER_COLORS = {
-  '1': '#4ECDC4',
-  '2': '#FF6B6B',
-  '3': '#4A90E2',
-  '4': '#E94B9E',
-  '5': '#A8E063',
-  '6': '#FFD93D'
+  '1': '#FF4444',
+  '2': '#FF8C00',
+  '3': '#FFD93D',
+  '4': '#9B59B6',
+  '5': '#E91E63',
+  '6': '#00BCD4'
+};
+
+// 📛 Cluster names
+const CLUSTER_NAMES = {
+  en: {
+    '1': 'Arterial Roads',
+    '2': 'Pedestrian-Friendly Dense Residential Streets',
+    '3': 'Mixed-Use Multi-Family Streets (Residential)',
+    '4': 'Mixed-Use Multi-Family Streets (Commercial)',
+    '5': 'Pedestrian-Friendly Downtown Streets',
+    '6': 'Car-Oriented Hangang Riverside Streets'
+  },
+  ko: {
+    '1': '간선도로',
+    '2': '보행친화적 고밀 주거 가로',
+    '3': '복합용도 다세대 가로 - 주거중심',
+    '4': '복합용도 다세대 가로 - 상업중심',
+    '5': '보행친화적 도심 가로',
+    '6': '자동차 중심 한강변 가로'
+  }
 };
 
 // 📝 Cluster descriptions (loaded from generated JSON)
@@ -69,20 +89,20 @@ async function loadClusterDescriptions() {
     // Fallback to default descriptions if loading fails
     CLUSTER_DESCRIPTIONS = {
       en: {
-        '1': 'Road-dominant commercial corridors with moderate building density.',
-        '2': 'Tree-lined residential streets with generous sidewalks.',
-        '3': 'Dense urban cores with high-rise buildings.',
-        '4': 'Active mixed-use neighborhoods with high pedestrian activity.',
-        '5': 'Balanced urban streets with mixed characteristics.',
-        '6': 'Open suburban or park-adjacent areas.'
+        '1': 'Road-dominant commercial corridors with wide arterial streets.',
+        '2': 'Pedestrian-friendly dense residential streets with generous sidewalks.',
+        '3': 'Mixed-use multi-family streets with a residential focus.',
+        '4': 'Mixed-use multi-family streets with a commercial focus.',
+        '5': 'Pedestrian-friendly downtown streets with high foot traffic.',
+        '6': 'Car-oriented streets along the Hangang riverside.'
       },
       ko: {
-        '1': '도로 중심의 상업 가로.',
-        '2': '나무가 많은 주거 가로.',
-        '3': '고층 건물이 밀집한 도심 지역.',
-        '4': '보행 활동이 활발한 복합용도 지역.',
-        '5': '균형잡힌 도시 가로.',
-        '6': '개방된 교외 또는 공원 인접 지역.'
+        '1': '도로 중심의 간선도로.',
+        '2': '보행친화적 고밀 주거 가로.',
+        '3': '복합용도 다세대 가로 - 주거중심.',
+        '4': '복합용도 다세대 가로 - 상업중심.',
+        '5': '보행친화적 도심 가로.',
+        '6': '자동차 중심 한강변 가로.'
       }
     };
   }
@@ -119,8 +139,8 @@ function renderSeoulOverview(filteredCluster = null) {
   if (titleEl) {
     if (filteredCluster) {
       titleEl.innerHTML = `
-        <span class="lang-en">Cluster ${filteredCluster} Analysis</span>
-        <span class="lang-ko">클러스터 ${filteredCluster} 분석</span>
+        <span class="lang-en">${CLUSTER_NAMES.en[filteredCluster]}</span>
+        <span class="lang-ko">${CLUSTER_NAMES.ko[filteredCluster]}</span>
       `;
     } else {
       titleEl.innerHTML = `
@@ -169,7 +189,8 @@ function renderSeoulOverview(filteredCluster = null) {
             <div class="cluster-bar-label">
               <span class="cluster-bar-name">
                 <span class="cluster-color-dot" style="background: ${CLUSTER_COLORS[cluster]};"></span>
-                Cluster ${cluster}
+                <span class="lang-en">${CLUSTER_NAMES.en[cluster]}</span>
+                <span class="lang-ko">${CLUSTER_NAMES.ko[cluster]}</span>
               </span>
               <span>${data.count.toLocaleString()}</span>
             </div>
@@ -317,7 +338,7 @@ function generateClusterSummary(cluster) {
       Characterized by high ${dominant1} and ${dominant2} coverage. ${description}
     </p>
     <p class="lang-ko">
-      <strong>주요 특징:</strong> ${charNamesKo[dominant1]}, ${charNamesKo[dominant2]}이 높은 비율을 차지합니다. ${descriptionKo}
+      <strong>주요 특징:</strong> ${charNamesKo[dominant1]}, ${charNamesKo[dominant2]} 부분이 거리 사진에서 높은 비율을 차지합니다. ${descriptionKo}
     </p>
   `;
 }
@@ -432,7 +453,7 @@ async function addStreetLayer() {
     paint: {
       'line-color': [
         'match',
-        ['get', 'cluster'], // Get cluster property from your data
+        ['to-string', ['get', 'cluster']], // Convert to string to handle both number and string values
         '1', CLUSTER_COLORS['1'],
         '2', CLUSTER_COLORS['2'],
         '3', CLUSTER_COLORS['3'],
@@ -575,7 +596,7 @@ function showClusterInfo(cluster, feature) {
   clusterInfo.style.display = 'block';
 
   // Update content
-  clusterTitle.textContent = `Cluster ${cluster}`;
+  clusterTitle.textContent = CLUSTER_NAMES[lang][cluster];
   radarChart.src = CLUSTER_CHARTS[cluster];
   description.textContent = CLUSTER_DESCRIPTIONS[lang][cluster];
 
@@ -636,7 +657,7 @@ function filterByCluster(cluster) {
     // Filter to show only selected cluster
     map.setPaintProperty(layerName, 'line-opacity', [
       'case',
-      ['==', ['get', 'cluster'], cluster],
+      ['==', ['to-string', ['get', 'cluster']], cluster],
       0.8,  // Show selected cluster
       0.1   // Dim others
     ]);

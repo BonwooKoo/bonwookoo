@@ -4,23 +4,23 @@
     "ko": "도로 중심의 상업 가로. 넓은 간선도로로 차량 통행이 많지만 보행 인프라는 제한적입니다."
   },
   "2": {
-    "en": "Tree-lined residential streets with generous sidewalks. High vegetation coverage creating shaded, comfortable pedestrian environments.",
-    "ko": "나무가 많은 주거 가로. 넓은 보도와 높은 녹지율로 그늘진 쾌적한 보행환경을 제공합니다."
+    "en": "Pedestrian-friendly dense residential streets with generous sidewalks. High vegetation coverage creating shaded, comfortable pedestrian environments.",
+    "ko": "보행친화적 고밀 주거 가로. 넓은 보도와 높은 녹지율로 그늘진 쾌적한 보행환경을 제공합니다."
   },
   "3": {
-    "en": "Dense urban cores with high-rise buildings. Limited sky visibility and minimal green space, typical of central business districts.",
-    "ko": "고층 건물이 밀집한 도심 지역. 제한된 하늘 가시율과 최소한의 녹지, 전형적인 업무 중심지입니다."
+    "en": "Mixed-use multi-family streets with a residential focus. Dense low-rise multi-family housing mixed with neighborhood commercial uses.",
+    "ko": "주거 중심의 복합용도 다세대 가로. 저층 다세대 주택과 근린상업이 혼합된 지역입니다."
   },
   "4": {
-    "en": "Active mixed-use neighborhoods with high pedestrian activity. Wide sidewalks accommodate significant foot traffic in vibrant urban areas.",
-    "ko": "보행 활동이 활발한 복합용도 지역. 넓은 보도가 많은 보행자를 수용하는 활기찬 도시 공간입니다."
+    "en": "Mixed-use multi-family streets with a commercial focus. Active storefronts and commercial activities alongside multi-family housing.",
+    "ko": "상업 중심의 복합용도 다세대 가로. 다세대 주택과 함께 활발한 상업 활동이 이루어지는 지역입니다."
   },
   "5": {
-    "en": "Balanced urban streets with mixed characteristics. Moderate levels across all metrics, representing typical Seoul neighborhoods.",
-    "ko": "균형잡힌 도시 가로. 모든 지표에서 중간 수준을 보이는 전형적인 서울 주거지역입니다."
+    "en": "Pedestrian-friendly downtown streets with wide sidewalks and high foot traffic. Vibrant urban areas accommodating significant pedestrian activity.",
+    "ko": "보행친화적 도심 가로. 넓은 보도와 많은 보행자를 수용하는 활기찬 도심 공간입니다."
   },
   "6": {
-    "en": "Open suburban or park-adjacent areas. High sky visibility with significant green coverage but minimal built infrastructure.",
-    "ko": "개방된 교외 또는 공원 인접 지역. 높은 하늘 가시율과 녹지 면적, 최소한의 건축 인프라가 특징입니다."
+    "en": "Car-oriented streets along the Hangang riverside. Wide roads with high vehicle speeds and limited pedestrian access.",
+    "ko": "자동차 중심 한강변 가로. 넓은 도로와 빠른 차량 속도, 제한적인 보행자 접근이 특징입니다."
   }
 }
