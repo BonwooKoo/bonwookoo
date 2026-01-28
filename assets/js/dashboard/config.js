@@ -1,4 +1,4 @@
 const MAPBOX_CONFIG = {
-  accessToken: 'pk.eyJ1IjoiaGFlc2V1bmdzdW5nIiwiYSI6ImNta3hlNmlobjA3emQzZHF5b2ZtM3pmZDQifQ.kSOoImsxeTW-Mcv5_sEskA',
+  accessToken: 'pk.eyJ1IjoiaGFlc2V1bmdzdW5nIiwiYSI6ImNtamdrNTRiMDEyeTkzZG84d2UwZnZyOWwifQ.bULPjKWBaUzxrBesriT99g',
   tilesetId: 'haeseungsung.6mfmtaji'
 };
