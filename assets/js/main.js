@@ -1005,20 +1005,7 @@
       modalList.innerHTML = '';
 
       // Convert NodeList to Array and sort by year (descending)
-      // Bike lanes paper comes first, then sort by year
       const sortedPublications = Array.from(allPublications).sort((a, b) => {
-        const titleA = a.querySelector('.publication-title')?.textContent || '';
-        const titleB = b.querySelector('.publication-title')?.textContent || '';
-
-        // Check if either is the bike lanes paper
-        const isBikeLanesA = titleA.includes('Automated Detection and Classification of Bike Lanes');
-        const isBikeLanesB = titleB.includes('Automated Detection and Classification of Bike Lanes');
-
-        // If one is bike lanes paper, it comes first
-        if (isBikeLanesA && !isBikeLanesB) return -1;
-        if (!isBikeLanesA && isBikeLanesB) return 1;
-
-        // Otherwise, sort by year (descending)
         const yearA = parseInt(a.querySelector('.publication-number')?.textContent || '0');
         const yearB = parseInt(b.querySelector('.publication-number')?.textContent || '0');
         return yearB - yearA; // Descending order
