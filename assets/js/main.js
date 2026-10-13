@@ -230,7 +230,9 @@
 
     // Load overview data
     let overviewData = {};
-    fetch('assets/data/publication-overviews.json')
+    // 새 논문 요약을 배포한 뒤에도 브라우저가 이전 JSON을 재사용하지 않도록
+    // 팝업에서 사용할 요약 데이터는 페이지를 열 때 서버에서 다시 읽습니다.
+    fetch('assets/data/publication-overviews.json', { cache: 'no-store' })
       .then(response => response.json())
       .then(data => {
         overviewData = data;
